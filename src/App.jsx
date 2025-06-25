@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Table from './components/table'
+import Header from './components/HeaderSection'
 
 function App () {
   const [products, setProducts] = useState([])
@@ -15,20 +16,7 @@ function App () {
   }
   return (
     <>
-      <header className='bg-blue-700 text-white p-4 '>
-        <section className='container mx-auto flex justify-between items-center'>
-
-          <h1 className='font-bold text-2xl'>🛍️ Note super market</h1>
-          <nav>
-            <ul className='flex space-x-4'>
-              <li><a href='#' className='text-white hover:underline'>Home</a></li>
-              <li><a href='#' className='text-white hover:underline'>Products</a></li>
-              <li><a href='#' className='text-white hover:underline'>About Us</a></li>
-              <li><a href='#' className='text-white hover:underline'>Contact</a></li>
-            </ul>
-          </nav>
-        </section>
-      </header>
+      <Header />
       <main>
         <section>
           <div className='container mx-auto p-4'>

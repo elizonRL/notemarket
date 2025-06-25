@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Table from './components/table'
 
 function App () {
   const [products, setProducts] = useState([])
@@ -17,7 +18,7 @@ function App () {
       <header className='bg-blue-700 text-white p-4 '>
         <section className='container mx-auto flex justify-between items-center'>
 
-          <h1 className='font-bold text-2xl '>🛍️ Note super market</h1>
+          <h1 className='font-bold text-2xl'>🛍️ Note super market</h1>
           <nav>
             <ul className='flex space-x-4'>
               <li><a href='#' className='text-white hover:underline'>Home</a></li>
@@ -61,13 +62,11 @@ function App () {
         <section>
           <div className='container mx-auto p-4'>
             <h2 className='text-2xl font-bold mb-4'>Product List</h2>
-            <ul className='list-disc pl-5'>
-              {products.map((product, index) => (
-                <li key={index} className='mb-2 text-gray-700 '>
-                  {product.name} - ${product.price.toFixed(2)}
-                </li>
-              ))}
-            </ul>
+            {products.length === 0
+              ? (
+                <p className='text-gray-500 text-center text-5xl'>No products added yet.</p>)
+              : <Table products={products} />}
+
           </div>
         </section>
       </main>

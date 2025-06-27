@@ -27,19 +27,19 @@ function App () {
                 onChange={(e) => setProductName(e.target.value)}
                 type='text'
                 placeholder='Enter product name'
-                className='border border-gray-300 p-2 rounded w-full mb-2'
+                className='border border-gray-300 p-2 rounded w-2xl mb-2'
               />
               <input
                 value={productPrice}
                 onChange={(e) => setProductPrice(e.target.value)}
                 type='number'
                 placeholder='Enter product price'
-                className='border border-gray-300 p-2 rounded w-full mb-2'
+                className='border  border-gray-300 p-2 rounded w-2xl mb-2'
               />
-              <div>
+              <div className='flex gap-4'>
                 <button
                   type='submit'
-                  className='bg-blue-500 text-white  px-7  rounded hover:bg-blue-600 text-wrap'
+                  className='bg-blue-500 text-white place-items-center px-6 rounded hover:bg-blue-600 text-wrap'
                 >
                   Add Product
                 </button>

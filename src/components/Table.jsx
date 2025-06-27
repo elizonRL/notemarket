@@ -19,7 +19,7 @@ const Table = ({ products }) => {
           </tbody>
         </table>
       </div>
-      <p className='text-gray-500 text-2xl mb-4'>Total Products: {products.length}</p>
+      <p className='text-gray-500 text-3xs mb-4'>Total Products: {products.length}</p>
     </section>
   )
 }

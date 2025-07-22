@@ -25,7 +25,7 @@ const Table = ({ products }) => {
                 className='hover:bg-gray-50'
               >
                 <td className='p-2 border'>{item.name}</td>
-                <td className='p-2 border'>{item.quantity} {item.category}</td>
+                <td className='p-2 border'>{item.quantity} '{item.category}</td>
                 <td className='p-2 border'>${item.price.toFixed(2)} </td>
                 <td className='p-2 border'>
                   ${(item.quantity * item.price).toFixed(2)}

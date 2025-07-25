@@ -1,7 +1,7 @@
 const Header = () => {
   return (
     <header className='bg-blue-700 text-white p-4 '>
-      <section className='container mx-auto flex justify-between items-center'>
+      <section className='container mx-auto flex md:justify-between items-center'>
 
         <h1 className='font-bold text-2xl'>🛍️ Note super market</h1>
         <nav>

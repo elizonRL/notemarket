@@ -23,7 +23,7 @@ const FormSection = ({ handleAddProduct }) => {
   return (
     <>
       <form
-        className='mb-4 flex flex-col gap-4 sm:flex-row justify-center'
+        className='w-md mx-auto flex flex-col gap-4 justify-center '
         onSubmit={addProducts}
       >
         <input
@@ -31,21 +31,21 @@ const FormSection = ({ handleAddProduct }) => {
           onChange={(e) => setProductName(e.target.value)}
           type='text'
           placeholder='Enter product name'
-          className='border border-gray-300 p-2 rounded w-2xl mb-2'
+          className='border border-gray-300 p-2 rounded mb-2'
         />
         <input
           value={productQuantity}
           onChange={(e) => setProductQuantity(e.target.value)}
           type='number'
           placeholder='Enter quantity'
-          className='border border-gray-300 p-2 rounded w-2xl mb-2'
+          className='border border-gray-300 p-2 rounded mb-2'
         />
         <input
           value={productPrice}
           onChange={(e) => setProductPrice(e.target.value)}
           type='number'
           placeholder='Enter product price'
-          className='border  border-gray-300 p-2 rounded w-2xl mb-2'
+          className='border  border-gray-300 p-2 rounded mb-2'
         />
         <select value={category} onChange={(e) => setCategory(e.target.value)} className='border border-gray-300 p-2 rounded w-3xs mb-2'>
           <option value=''>Select Tipe of products</option>

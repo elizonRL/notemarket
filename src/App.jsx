@@ -14,7 +14,7 @@ function App () {
       <Header />
       <main>
         <section>
-          <div className='p-4'>
+          <div className='w-md mx-auto p-4'>
             <h2 className='text-2xl font-bold mb-4'>
               Make your list of products
             </h2>
@@ -22,7 +22,7 @@ function App () {
           </div>
         </section>
         <section>
-          <div className='container mx-auto p-4'>
+          <div className=''>
             <h2 className='text-2xl font-bold mb-4'>Product List</h2>
             {products.length === 0
               ? (

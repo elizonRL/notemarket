@@ -8,42 +8,32 @@ const Table = ({ products }) => {
   }
   return (
     <>
-      <div className='max-w-full mx-auto mt-10 p-4 bg-white shadow rounded'>
-        <table className='w-full table-auto text-left border-collapse'>
-          <thead>
-            <tr className='bg-gray-100 text-gray-700'>
-              <th className='p-2 border'>Producto</th>
-              <th className='p-2 border'>Cantidad</th>
-              <th className='p-2 border'>Precio Unitario</th>
-              <th className='p-2 border'>Subtotal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((item, i) => (
-              <tr
-                key={i}
-                className='hover:bg-gray-50'
-              >
-                <td className='p-2 border'>{item.name}</td>
-                <td className='p-2 border'>{item.quantity} '{item.category}</td>
-                <td className='p-2 border'>${item.price.toFixed(2)} </td>
-                <td className='p-2 border'>
-                  ${(item.quantity * item.price).toFixed(2)}
-                </td>
-              </tr>
-            ))}
-            <tr className='font-semibold bg-gray-100'>
-              <td
-                className='p-2 border'
-                colSpan={3}
-              >
-                Total:
-              </td>
-              <td className='p-2 border'>${total.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <aside className='min-w-md w-md md:w-full mx-auto mt-10 p-4 bg-white shadow rounded'>
+        <div className='flex justify-between items-center bg-gray-100 p-4 rounded-t'>
+          <h3>Product</h3>
+          <h3>Quantity</h3>
+          <h3>Unit Price</h3>
+          <h3>Subtotal</h3>
+        </div>
+        <div className='overflow-x-auto'>
+          {products.map((item, i) => (
+            <div
+              key={i}
+              className='flex justify-between items-center p-4 border-b '
+            >
+              <span>{item.name}</span>
+              <span>{item.quantity} {item.category}</span>
+              <span>${item.price.toFixed(2)}</span>
+              <span>${(item.quantity * item.price).toFixed(2)}</span>
+            </div>
+          ))}
+          <div className='flex justify-end items-center p-4  font-semibold bg-gray-100'>
+            <span>Total:</span>
+            <span>${total.toFixed(2)}</span>
+          </div>
+        </div>
+      </aside>
+
     </>
   )
 }

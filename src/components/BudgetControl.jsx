@@ -72,7 +72,7 @@ const BudgetControl = ({ totalSpent }) => {
               <span>{percentage.toFixed(1)}%</span>
             </div>
             <div className='w-full bg-gray-200 rounded-full h-4'>
-              <div 
+              <div
                 className={`h-4 rounded-full transition-all duration-500 ${getBarColor()}`}
                 style={{ width: `${Math.min(percentage, 100)}%` }}
               />

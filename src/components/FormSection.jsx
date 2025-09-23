@@ -19,7 +19,6 @@ const FormSection = ({ handleAddProduct, onClose }) => {
   const addProducts = (e) => {
     e.preventDefault()
     const formErrors = validateForm()
-    
     if (Object.keys(formErrors).length === 0) {
       handleAddProduct({
         name: productName,
@@ -122,7 +121,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
         <div className='flex flex-col sm:flex-row gap-3 pt-4'>
           <button
             type='submit'
-            className='flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg'
+            className='flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-102 shadow-lg'
           >
             ✓ Agregar producto
           </button>

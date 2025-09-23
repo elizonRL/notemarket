@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Table from './components/table'
+import Table from './components/Table'
 import Header from './components/HeaderSection'
 import FormSection from './components/FormSection'
 import ExpenseChart from './components/ExpenseChart'

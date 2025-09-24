@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const BudgetControl = ({ totalSpent }) => {
   const [budget, setBudget] = useState(0)
   const [showBudgetForm, setShowBudgetForm] = useState(false)
+  const inputRef = useRef(null)
 
   const percentage = budget > 0 ? (totalSpent / budget) * 100 : 0
   const remaining = budget - totalSpent
@@ -17,6 +18,11 @@ const BudgetControl = ({ totalSpent }) => {
     if (percentage >= 100) return 'bg-red-500'
     if (percentage >= 80) return 'bg-yellow-500'
     return 'bg-green-500'
+  }
+
+  const cancelPresupuesto = () => {
+    setBudget(0)
+    setShowBudgetForm(false)
   }
 
   return (
@@ -34,16 +40,35 @@ const BudgetControl = ({ totalSpent }) => {
       {showBudgetForm && (
         <div className='mb-4 p-4 bg-gray-50 rounded-lg'>
           <input
+            ref={inputRef}
             type='number'
             placeholder='Ingresa tu presupuesto'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg'
-            onKeyPress={(e) => {
+            defaultValue={budget > 0 ? budget : ''}
+            onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                setBudget(parseFloat(e.target.value) || 0)
+                setBudget(parseFloat(inputRef.current.value) || 0)
                 setShowBudgetForm(false)
               }
             }}
           />
+          <div className='flex gap-2 mt-3'>
+            <button
+              onClick={() => {
+                setBudget(parseFloat(inputRef.current.value) || 0)
+                setShowBudgetForm(false)
+              }}
+              className='flex-1 bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors'
+            >
+              ✓ Establecer
+            </button>
+            <button
+              onClick={() => setShowBudgetForm(false)}
+              className='px-4 py-2 text-gray-500 hover:text-gray-700 transition-colors'
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
       )}
 
@@ -64,6 +89,9 @@ const BudgetControl = ({ totalSpent }) => {
                 ${remaining.toFixed(2)}
               </span>
             </div>
+            <button onClick={cancelPresupuesto} className='w-full text-sm text-blue-600 hover:text-blue-800 font-medium'>
+              Cancelar presupuesto
+            </button>
           </div>
 
           <div className='mt-4'>
@@ -72,7 +100,7 @@ const BudgetControl = ({ totalSpent }) => {
               <span>{percentage.toFixed(1)}%</span>
             </div>
             <div className='w-full bg-gray-200 rounded-full h-4'>
-              <div 
+              <div
                 className={`h-4 rounded-full transition-all duration-500 ${getBarColor()}`}
                 style={{ width: `${Math.min(percentage, 100)}%` }}
               />

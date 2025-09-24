@@ -1,18 +1,23 @@
 const Header = () => {
   return (
-    <header className='bg-blue-700 text-white p-4 '>
-      <section className='container mx-auto flex md:justify-between items-center'>
-
-        <h1 className='font-bold text-2xl'>🛍️ Note super market</h1>
-        <nav>
-          <ul className='flex space-x-4'>
-            <li><a href='#' className='text-white hover:underline'>Home</a></li>
-            <li><a href='#' className='text-white hover:underline'>Products</a></li>
-            <li><a href='#' className='text-white hover:underline'>About Us</a></li>
-            <li><a href='#' className='text-white hover:underline'>Contact</a></li>
-          </ul>
-        </nav>
-      </section>
+    <header className='bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg'>
+      <div className='container mx-auto px-4 py-6'>
+        <div className='flex items-center justify-center'>
+          <div className='flex items-center gap-3'>
+            <div className='bg-white/20 p-3 rounded-full backdrop-blur-sm'>
+              💰
+            </div>
+            <div className='text-center sm:text-left'>
+              <h1 className='font-bold text-2xl sm:text-3xl lg:text-4xl'>
+                SmartCart
+              </h1>
+              <p className='text-blue-100 text-sm sm:text-base font-light'>
+                Control inteligente de gastos
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
   )
 }

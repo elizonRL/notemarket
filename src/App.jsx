@@ -1,90 +1,85 @@
 import { useState } from 'react'
 import Table from './components/Table'
 import Header from './components/HeaderSection'
+import FormSection from './components/FormSection'
+import ExpenseChart from './components/ExpenseChart'
+import BudgetControl from './components/BudgetControl'
 
 function App () {
   const [products, setProducts] = useState([])
-  const [productName, setProductName] = useState('')
-  const [productPrice, setProductPrice] = useState('')
-  const [productQuantity, setProductQuantity] = useState('')
-  const [category, setCategory] = useState('')
+  const [showForm, setShowForm] = useState(false)
 
-  const handleAddProduct = (e) => {
-    e.preventDefault()
-    if (productName && productPrice) {
-      setProducts([
-        ...products,
-        {
-          name: productName,
-          price: parseFloat(productPrice),
-          quantity: parseInt(productQuantity) || 1,
-          category: category || 'Uncategorized'
-        }
-      ])
-      setProductName('')
-      setProductPrice('')
-      setProductQuantity('')
-    }
+  const handleAddProduct = (Product) => {
+    setProducts((prevProducts) => [...prevProducts, Product])
   }
+
+  const handleUpdateProduct = (index, updatedProduct) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product, i) => i === index ? updatedProduct : product)
+    )
+  }
+
+  const handleDeleteProduct = (index) => {
+    setProducts((prevProducts) => prevProducts.filter((_, i) => i !== index))
+  }
+
+  const totalSpent = products.reduce((sum, product) => sum + (product.quantity * product.price), 0)
   return (
     <>
       <Header />
       <main>
-        <section>
-          <div className='container mx-auto p-4'>
-            <h2 className='text-2xl font-bold mb-4'>
-              Make your list of products
-            </h2>
-            <form
-              className='mb-4 flex flex-col gap-4 sm:flex-row justify-center'
-              onSubmit={handleAddProduct}
-            >
-              <input
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                type='text'
-                placeholder='Enter product name'
-                className='border border-gray-300 p-2 rounded w-2xl mb-2'
-              />
-              <input
-                value={productQuantity}
-                onChange={(e) => setProductQuantity(e.target.value)}
-                type='number'
-                placeholder='Enter quantity'
-                className='border border-gray-300 p-2 rounded w-2xl mb-2'
-              />
-              <input
-                value={productPrice}
-                onChange={(e) => setProductPrice(e.target.value)}
-                type='number'
-                placeholder='Enter product price'
-                className='border  border-gray-300 p-2 rounded w-2xl mb-2'
-              />
-              <select value={category} onChange={(e) => setCategory(e.target.value)} className='border border-gray-300 p-2 rounded w-3xs mb-2'>
-                <option value=''>Select Tipe of products</option>
-                <option value='Pound'>Pound</option>
-                <option value='Units'>Units</option>
-              </select>
-              <div className='flex gap-4'>
+        <section className='px-4 py-6'>
+          <div className='max-w-4xl mx-auto space-y-6'>
+            <BudgetControl totalSpent={totalSpent} />
+
+            <div className='text-center'>
+              <h2 className='text-2xl font-bold mb-4 text-gray-800'>
+                🛍️ Mi Carrito de Compras
+              </h2>
+              <div className='flex flex-col sm:flex-row gap-3 justify-center'>
                 <button
-                  type='submit'
-                  className='bg-blue-500 text-white place-items-center px-6 rounded hover:bg-blue-600 text-wrap'
+                  onClick={() => setShowForm(!showForm)}
+                  className='bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 font-medium'
                 >
-                  Add Product
+                  {showForm ? '✕ Cerrar formulario' : '+ Agregar producto'}
                 </button>
+                {products.length > 0 && (
+                  <div className='bg-green-100 text-green-800 px-6 py-3 rounded-lg font-bold'>
+                    Total: ${totalSpent.toFixed(2)}
+                  </div>
+                )}
               </div>
-            </form>
+            </div>
+
+            {showForm && (
+              <div className='animate-fadeIn'>
+                <FormSection handleAddProduct={handleAddProduct} onClose={() => setShowForm(false)} />
+              </div>
+            )}
           </div>
         </section>
-        <section>
-          <div className='container mx-auto p-4'>
-            <h2 className='text-2xl font-bold mb-4'>Product List</h2>
+        <section className='px-4 py-6'>
+          <div className='max-w-6xl mx-auto'>
+            <h2 className='text-2xl font-bold mb-6 text-center text-gray-800'>Lista de productos</h2>
             {products.length === 0
               ? (
-                <p className='text-gray-500 text-center text-5xl'> No products added yet. </p>
+                <div className='text-center py-12'>
+                  <div className='text-6xl mb-4'>📦</div>
+                  <p className='text-gray-500 text-xl'>No hay productos agregados aún</p>
+                  <p className='text-gray-400 text-sm mt-2'>Haz clic en "Agregar producto" para comenzar</p>
+                </div>
                 )
               : (
-                <Table products={products} />
+                <>
+                  <Table
+                    products={products}
+                    onUpdateProduct={handleUpdateProduct}
+                    onDeleteProduct={handleDeleteProduct}
+                  />
+                  <div className='mt-8'>
+                    <ExpenseChart products={products} />
+                  </div>
+                </>
                 )}
           </div>
         </section>

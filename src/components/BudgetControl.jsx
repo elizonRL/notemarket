@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { Input } from './Input'
 
 const BudgetControl = ({ totalSpent }) => {
   const [budget, setBudget] = useState(0)
@@ -39,7 +40,7 @@ const BudgetControl = ({ totalSpent }) => {
 
       {showBudgetForm && (
         <div className='mb-4 p-4 bg-gray-50 rounded-lg'>
-          <input
+          <Input
             ref={inputRef}
             type='number'
             placeholder='Ingresa tu presupuesto'

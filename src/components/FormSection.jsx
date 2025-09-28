@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Input } from './Input'
 
 const FormSection = ({ handleAddProduct, onClose }) => {
   const [productName, setProductName] = useState('')
@@ -45,7 +46,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             <label className='block text-sm font-medium text-gray-700 mb-2'>
               Nombre del producto
             </label>
-            <input
+            <Input
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               type='text'
@@ -86,7 +87,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             <label className='block text-sm font-medium text-gray-700 mb-2'>
               Cantidad
             </label>
-            <input
+            <Input
               value={productQuantity}
               onChange={(e) => setProductQuantity(e.target.value)}
               type='number'
@@ -103,7 +104,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             <label className='block text-sm font-medium text-gray-700 mb-2'>
               Precio ($)
             </label>
-            <input
+            <Input
               value={productPrice}
               onChange={(e) => setProductPrice(e.target.value)}
               type='number'

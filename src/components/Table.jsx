@@ -1,3 +1,5 @@
+import { Input } from './Input'
+
 const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
   const total = products.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -35,7 +37,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
                 </span>
               </div>
               <div className='text-center'>
-                <input
+                <Input
                   type='number'
                   value={item.quantity}
                   onChange={(e) => handleQuantityChange(i, e.target.value)}
@@ -48,7 +50,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
               <div className='text-center'>
                 <button
                   onClick={() => onDeleteProduct(i)}
-                  className='text-red-500 hover:text-red-700 p-1'
+                  className='text-red-500 rounded-md hover:inset-shadow-sm inset-shadow-red-700 p-1'
                 >
                   🗑️
                 </button>

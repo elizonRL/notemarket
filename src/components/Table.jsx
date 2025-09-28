@@ -50,7 +50,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
               <div className='text-center'>
                 <button
                   onClick={() => onDeleteProduct(i)}
-                  className='text-red-500 hover:text-red-700 p-1'
+                  className='text-red-500 rounded-md hover:inset-shadow-sm inset-shadow-red-700 p-1'
                 >
                   🗑️
                 </button>

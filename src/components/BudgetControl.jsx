@@ -27,8 +27,8 @@ const BudgetControl = ({ totalSpent }) => {
   }
 
   return (
-    <div className='bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
-      <div className='flex justify-between items-center mb-4'>
+    <article className='bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
+      <section className='flex justify-between items-center mb-4'>
         <h3 className='text-xl font-bold text-gray-800'>💰 Control de Presupuesto</h3>
         <button
           onClick={() => setShowBudgetForm(!showBudgetForm)}
@@ -36,10 +36,10 @@ const BudgetControl = ({ totalSpent }) => {
         >
           {budget > 0 ? 'Cambiar' : 'Establecer'}
         </button>
-      </div>
+      </section>
 
       {showBudgetForm && (
-        <div className='mb-4 p-4 bg-gray-50 rounded-lg'>
+        <section className='mb-4 p-4 bg-gray-50 rounded-lg'>
           <Input
             ref={inputRef}
             type='number'
@@ -53,7 +53,7 @@ const BudgetControl = ({ totalSpent }) => {
               }
             }}
           />
-          <div className='flex gap-2 mt-3'>
+          <aside className='flex gap-2 mt-3'>
             <button
               onClick={() => {
                 setBudget(parseFloat(inputRef.current.value) || 0)
@@ -69,13 +69,13 @@ const BudgetControl = ({ totalSpent }) => {
             >
               Cancelar
             </button>
-          </div>
-        </div>
+          </aside>
+        </section>
       )}
 
       {budget > 0 && (
         <>
-          <div className='space-y-3'>
+          <section className='space-y-3'>
             <div className='flex justify-between items-center'>
               <span className='text-gray-600'>Presupuesto:</span>
               <span className='font-bold text-gray-900'>${budget.toFixed(2)}</span>
@@ -93,9 +93,9 @@ const BudgetControl = ({ totalSpent }) => {
             <button onClick={cancelPresupuesto} className='w-full text-sm text-blue-600 hover:text-blue-800 font-medium'>
               Cancelar presupuesto
             </button>
-          </div>
+          </section>
 
-          <div className='mt-4'>
+          <aside className='mt-4'>
             <div className='flex justify-between text-sm text-gray-600 mb-1'>
               <span>Progreso</span>
               <span>{percentage.toFixed(1)}%</span>
@@ -106,7 +106,7 @@ const BudgetControl = ({ totalSpent }) => {
                 style={{ width: `${Math.min(percentage, 100)}%` }}
               />
             </div>
-          </div>
+          </aside>
 
           {percentage >= 100 && (
             <div className='mt-3 p-3 bg-red-100 border border-red-300 rounded-lg'>
@@ -120,7 +120,7 @@ const BudgetControl = ({ totalSpent }) => {
           )}
         </>
       )}
-    </div>
+    </article>
   )
 }
 

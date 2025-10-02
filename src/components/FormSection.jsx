@@ -8,6 +8,18 @@ const FormSection = ({ handleAddProduct, onClose }) => {
   const [category, setCategory] = useState('')
   const [errors, setErrors] = useState({})
 
+  const categories = [
+    { id: 1, value: '🥬 Frutas y Verduras' },
+    { id: 2, value: '🥛 Lácteos' },
+    { id: 3, value: '🍞 Panadería' },
+    { id: 4, value: '🍖 Carnes' },
+    { id: 5, value: '🥫 Enlatados' },
+    { id: 6, value: '🧽 Limpieza' },
+    { id: 7, value: '🍪 Snacks' },
+    { id: 8, value: '🧊 Congelados' },
+    { id: 9, value: '🍚 Arroz y Cereales' }
+  ]
+
   const validateForm = () => {
     const newErrors = {}
     if (!productName.trim()) newErrors.name = 'El nombre es requerido'
@@ -70,15 +82,9 @@ const FormSection = ({ handleAddProduct, onClose }) => {
               }`}
             >
               <option value=''>Selecciona la categoría</option>
-              <option value='🥬 Frutas y Verduras'>🥬 Frutas y Verduras</option>
-              <option value='🥛 Lácteos'>🥛 Lácteos</option>
-              <option value='🍞 Panadería'>🍞 Panadería</option>
-              <option value='🍖 Carnes'>🍖 Carnes</option>
-              <option value='🥫 Enlatados'>🥫 Enlatados</option>
-              <option value='🧽 Limpieza'>🧽 Limpieza</option>
-              <option value='🍪 Snacks'>🍪 Snacks</option>
-              <option value='🧊 Congelados'>🧊 Congelados</option>
-              <option value='🍚 Arroz y Cereales'>🍚 Arroz y Cereales</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.value}>{cat.value}</option>
+              ))}
             </select>
             {errors.category && <p className='text-red-500 text-sm mt-1'>{errors.category}</p>}
           </div>

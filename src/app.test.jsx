@@ -4,22 +4,24 @@ import userEvent from '@testing-library/user-event'
 
 import App from './App'
 
+const appRender = () => render(<App />)
+
 describe('Test App component', () => {
   test('tes app', () => {
-    render(<App />)
+    appRender()
 
     const element = screen.getByText('🛍️ Mi Carrito de Compras')
     expect(element).toBeDefined()
   })
   test('test Lista de productos', () => {
-    render(<App />)
+    appRender()
 
     const element = screen.getByText('Lista de productos')
     expect(element).toBeDefined()
   })
 
   test('test Presupuesto inicial', async () => {
-    render(<App />)
+    appRender()
     const element = screen.getByRole('button', { name: /\+ Agregar producto/i })
     await userEvent.click(element)
 

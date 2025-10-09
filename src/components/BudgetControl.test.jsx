@@ -4,14 +4,16 @@ import { render, screen } from '@testing-library/react'
 import BudgetControl from './BudgetControl'
 import userEvent from '@testing-library/user-event'
 
+const Component = () => render(<BudgetControl totalSpent={200} />)
+
 describe('BudgetControl', () => {
   test('renderiza el título y el botón inicial', () => {
-    render(<BudgetControl totalSpent={200} />)
+    Component()
     expect(screen.getByText(/control de presupuesto/i)).toBeDefined()
     expect(screen.getByRole('button', { name: /establecer/i })).toBeDefined()
   })
   test('muestra el formulario cuando se hace clic en "Establecer presupuesto"', async () => {
-    render(<BudgetControl totalSpent={200} />)
+    Component()
     const establecerButton = screen.getByRole('button', { name: /establecer/i })
     await userEvent.click(establecerButton)
 

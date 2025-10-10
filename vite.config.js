@@ -9,5 +9,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './testSetup.js'
+  },
+  resolve: {
+    alias: {
+      '@': '/src/components/'
+    }
   }
 })

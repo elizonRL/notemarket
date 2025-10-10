@@ -5,7 +5,7 @@
  */
 
 import { render, screen } from '@testing-library/react'
-import { describe, test, expect, vi } from 'vitest'
+import { describe, test, expect, vi, beforeEach } from 'vitest'
 
 import FormSection from './FormSection'
 import userEvent from '@testing-library/user-event'
@@ -18,6 +18,10 @@ const onClose = vi.fn() // Mock para simular la función de cerrar formulario
 const Component = () => render(<FormSection handleAddProduct={createProduct} onClose={onClose} />)
 
 describe('test para probar el fromulario de agregar productos', async () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   /**
    * Test 1: Verificar renderizado inicial
 
@@ -78,5 +82,26 @@ describe('test para probar el fromulario de agregar productos', async () => {
       quantity: 10, // Nota: se convierte automáticamente a número
       price: 2.5 // Nota: se convierte automáticamente a número
     })
+  })
+  test('Muestra errores si el formulario está incompleto', async () => {
+    Component()
+    const user = userEvent.setup()
+    const addButton = screen.getByRole('button', { name: /✓ Agregar producto/i })
+    await user.click(addButton)
+    // Intentar enviar el formulario vacío
+
+    // Verificar que se muestra un mensaje de error para cada campo requerido
+    expect(screen.getByText(/El nombre es requerido/i)).toBeDefined()
+    // Nombre del producto
+    expect(screen.getByText(/Selecciona un tipo/i)).toBeDefined() // Categoría
+    expect(screen.getByText(/Cantidad debe ser mayor a 0/i)).toBeDefined() // Cantidad
+    expect(screen.getByText(/Precio debe ser mayor a 0/i)).toBeDefined() // Precio
+  })
+  test('El formulario se cierra al hacer clic en el botón de cerrar', async () => {
+    Component()
+    const user = userEvent.setup()
+    const closeButton = screen.getByRole('button', { name: /Cancelar/i })
+    await user.click(closeButton)
+    expect(onClose).toHaveBeenCalledTimes(1) // Verificar que se llamó la función onClose una vez
   })
 })

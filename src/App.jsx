@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import Table from './components/Table'
-import Header from './components/HeaderSection'
-import FormSection from './components/FormSection'
-import ExpenseChart from './components/ExpenseChart'
-import BudgetControl from './components/BudgetControl'
+import Table from '@/Table'
+import Header from '@/HeaderSection'
+import FormSection from '@/FormSection'
+import ExpenseChart from '@/ExpenseChart'
+import BudgetControl from '@/BudgetControl'
 
 function App () {
   const [products, setProducts] = useState([])

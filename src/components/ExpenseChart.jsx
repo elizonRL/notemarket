@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react'
+import { PieChart } from '@mui/x-charts/PieChart'
 const ExpenseChart = ({ products }) => {
+  const [dataChart, setDataChart] = useState([])
   if (products.length === 0) return null
 
   const productExpenses = products.map(product => ({
@@ -14,14 +17,20 @@ const ExpenseChart = ({ products }) => {
   })
 
   productExpenses.sort((a, b) => b.total - a.total)
-
-  const getBarColor = (index) => {
+  useEffect(() => {
+    const data = productExpenses.map(item => ({
+      label: item.name + ' ' + item.total + '$',
+      value: item.percentage
+    }))
+    setDataChart(data)
+  }, [products])
+  /* const getBarColor = (index) => {
     const colors = [
       'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500',
       'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-orange-500'
     ]
     return colors[index % colors.length]
-  }
+  } */
 
   return (
     <article className='bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
@@ -30,7 +39,8 @@ const ExpenseChart = ({ products }) => {
       </h3>
 
       <section className='space-y-4'>
-        {productExpenses.map((item, index) => (
+        <PieChart series={[{ data: dataChart }]} className='w-full' />
+        {/* {productExpenses.map((item, index) => (
           <div key={index} className='space-y-2'>
             <div className='flex justify-between items-center'>
               <span className='font-medium text-gray-700 truncate flex-1 mr-4'>
@@ -51,7 +61,7 @@ const ExpenseChart = ({ products }) => {
               />
             </div>
           </div>
-        ))}
+        ))} */}
       </section>
 
       <section className='mt-6 pt-4 border-t border-gray-200'>

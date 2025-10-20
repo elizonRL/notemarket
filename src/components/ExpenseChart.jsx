@@ -33,41 +33,68 @@ const ExpenseChart = ({ products }) => {
   } */
 
   return (
-    <article className='bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
-      <h3 className='text-xl font-bold text-gray-800 mb-6 text-center'>
+    <article className='bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100'>
+      <h3 className='text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 text-center'>
         📊 Gastos por producto
       </h3>
 
-      <section className='space-y-4'>
-        <PieChart series={[{ data: dataChart }]} className='w-full' />
-        {/* {productExpenses.map((item, index) => (
-          <div key={index} className='space-y-2'>
-            <div className='flex justify-between items-center'>
-              <span className='font-medium text-gray-700 truncate flex-1 mr-4'>
+      <section className='flex flex-col items-center'>
+        <div className='w-full max-w-sm sm:max-w-md lg:max-w-lg'>
+          <PieChart
+            series={[{
+              data: dataChart,
+              highlightScope: { faded: 'global', highlighted: 'item' },
+              faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
+            }]}
+            width={320}
+            height={320}
+            className='w-full h-auto'
+            margin={{ top: 20, bottom: 20, left: 20, right: 20 }}
+            slotProps={{
+              legend: {
+                direction: 'column',
+                position: { vertical: 'bottom', horizontal: 'middle' },
+                padding: 0,
+                itemMarkWidth: 12,
+                itemMarkHeight: 12,
+                markGap: 8,
+                itemGap: 4,
+                labelStyle: {
+                  fontSize: 12,
+                  fontWeight: 500
+                }
+              }
+            }}
+          />
+        </div>
+
+        {/* Lista de productos para móvil */}
+        <div className='w-full mt-4 space-y-2 sm:hidden'>
+          {productExpenses.slice(0, 5).map((item, index) => (
+            <div key={index} className='flex justify-between items-center p-2 bg-gray-50 rounded-lg'>
+              <span className='font-medium text-gray-700 text-sm truncate flex-1 mr-2'>
                 {item.name}
               </span>
               <div className='text-right'>
-                <span className='font-bold text-gray-900'>${item.total.toFixed(2)}</span>
-                <span className='text-sm text-gray-500 ml-2'>
+                <span className='font-bold text-gray-900 text-sm'>${item.total.toFixed(2)}</span>
+                <span className='text-xs text-gray-500 ml-1'>
                   ({item.percentage.toFixed(1)}%)
                 </span>
               </div>
             </div>
-
-            <div className='w-full bg-gray-200 rounded-full h-3 overflow-hidden'>
-              <div
-                className={`h-full ${getBarColor(index)} transition-all duration-500 ease-out rounded-full`}
-                style={{ width: `${item.percentage}%` }}
-              />
-            </div>
-          </div>
-        ))} */}
+          ))}
+        </div>
       </section>
 
-      <section className='mt-6 pt-4 border-t border-gray-200'>
+      <section className='mt-4 sm:mt-6 pt-4 border-t border-gray-200'>
         <div className='flex justify-between items-center'>
-          <span className='text-gray-600'>Gasto total:</span>
-          <span className='text-xl font-bold text-green-600'>${totalExpense.toFixed(2)}</span>
+          <span className='text-gray-600 text-sm sm:text-base'>Gasto total:</span>
+          <span className='text-lg sm:text-xl font-bold text-green-600'>${totalExpense.toFixed(2)}</span>
+        </div>
+        <div className='text-center mt-2'>
+          <span className='text-xs sm:text-sm text-gray-500'>
+            {products.length} producto{products.length !== 1 ? 's' : ''} en total
+          </span>
         </div>
       </section>
     </article>

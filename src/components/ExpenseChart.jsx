@@ -19,7 +19,7 @@ const ExpenseChart = ({ products }) => {
   productExpenses.sort((a, b) => b.total - a.total)
   useEffect(() => {
     const data = productExpenses.map(item => ({
-      label: item.name + ' ' + item.total + '$',
+      label: item.name + ' ' + '$' + item.total,
       value: item.percentage
     }))
     setDataChart(data)
@@ -43,6 +43,7 @@ const ExpenseChart = ({ products }) => {
           <PieChart
             series={[{
               data: dataChart,
+              arcLabel: (item) => `${item.label} (${item.value.toFixed(1)}%)`,
               highlightScope: { faded: 'global', highlighted: 'item' },
               faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' }
             }]}
@@ -63,6 +64,14 @@ const ExpenseChart = ({ products }) => {
                   fontSize: 12,
                   fontWeight: 500
                 }
+              },
+              arcLabel: {
+                fontSize: 12,
+                fill: '#ffffff',
+                color: '#ffffff',
+                fontWeight: 'bold',
+                stroke: '#000000',
+                strokeWidth: 0.5
               }
             }}
           />

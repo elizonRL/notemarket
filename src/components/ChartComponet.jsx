@@ -1,4 +1,4 @@
-import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart'
+import { pieArcLabelClasses, pieArcClasses, pieClasses, PieChart } from '@mui/x-charts/PieChart'
 const ChartComponent = ({ dataChart }) => {
   return (
     <>
@@ -33,16 +33,17 @@ const ChartComponent = ({ dataChart }) => {
               }
             }
           }}
-          sx={
-            {
-              [`& .${pieArcLabelClasses.root}`]: {
-                fontSize: 16,
-                fontWeight: 'bold',
-                fill: '#ffffff',
-                textShadow: '0 0 3px rgba(0,0,0,0.3)'
-              }
+          sx={{
+            [`& .${pieArcLabelClasses.root}`]: {
+              fontSize: 16,
+              fontWeight: 'bold',
+              fill: '#ffffff',
+              textShadow: '0 0 3px rgba(0,0,0,0.3)'
+            },
+            [`.${pieClasses.series}[data-series="outer"] .${pieArcClasses.root}`]: {
+              opacity: 0.6
             }
-          }
+          }}
         />
       </div>
     </>

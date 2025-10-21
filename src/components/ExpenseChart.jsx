@@ -19,7 +19,7 @@ const ExpenseChart = ({ products }) => {
     item.percentage = (item.total / totalExpense) * 100
   })
 
-  productExpenses.sort((a, b) => b.total - a.total)
+  productExpenses.sort((productA, productB) => productB.total - productA.total)
 
   const [dataChart] = useChartData(productExpenses)
 

@@ -5,8 +5,6 @@ import { useChartData } from '../hooks/useChartData.js'
 const ExpenseChart = ({ products }) => {
   if (products.length === 0) return null
 
-  /* const [dataChart, setDataChart] = useState([]) */
-
   const productExpenses = useMemo(() => products.map(product => ({
     name: product.name,
     total: product.quantity * product.price,

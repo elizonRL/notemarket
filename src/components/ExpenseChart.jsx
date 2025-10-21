@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react'
-import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart'
+import { useMemo } from 'react'
+import { pieArcLabelClasses, pieArcClasses, pieClasses, PieChart } from '@mui/x-charts/PieChart'
+import { useChartData } from '../hooks/useChartData.js'
 
 const ExpenseChart = ({ products }) => {
-  const [dataChart, setDataChart] = useState([])
   if (products.length === 0) return null
 
-  const productExpenses = products.map(product => ({
+  /* const [dataChart, setDataChart] = useState([]) */
+
+  const productExpenses = useMemo(() => products.map(product => ({
     name: product.name,
     total: product.quantity * product.price,
     percentage: 0
-  }))
+  })), [products])
 
   const totalExpense = productExpenses.reduce((sum, item) => sum + item.total, 0)
 
@@ -17,28 +19,9 @@ const ExpenseChart = ({ products }) => {
     item.percentage = (item.total / totalExpense) * 100
   })
 
-  const getBarColor = (index) => {
-    const chartColors = [
-      '#ef4444', // red-500
-      '#3b82f6', // blue-500
-      '#10b981', // green-500
-      '#f59e0b', // yellow-500
-      '#8b5cf6', // purple-500
-      '#ec4899', // pink-500
-      '#6366f1', // indigo-500
-      '#f97316' // orange-500
-    ]
-    return chartColors[index % chartColors.length]
-  }
   productExpenses.sort((a, b) => b.total - a.total)
-  useEffect(() => {
-    const data = productExpenses.map((item, index) => ({
-      label: item.name + ' ' + '$' + item.total,
-      value: item.percentage,
-      color: getBarColor(index)
-    }))
-    setDataChart(data)
-  }, [products])
+
+  const [dataChart] = useChartData(productExpenses)
 
   return (
     <article className='bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100'>
@@ -78,22 +61,22 @@ const ExpenseChart = ({ products }) => {
                 }
               }
             }}
-            sx={
-              {
-                [`& .${pieArcLabelClasses.root}`]: {
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  fill: '#ffffff',
-                  textShadow: '0 0 3px rgba(0,0,0,0.3)'
-                }
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fontSize: 16,
+                fontWeight: 'bold',
+                fill: '#ffffff',
+                textShadow: '0 0 3px rgba(0,0,0,0.3)'
+              },
+              [`.${pieClasses.series}[data-series="outer"] .${pieArcClasses.root}`]: {
+                opacity: 0.6
               }
-            }
+            }}
           />
         </div>
 
-        {/* Lista de productos para móvil */}
         <div className='w-full mt-4 space-y-2'>
-          {productExpenses.slice(0, 5).map((item, index) => (
+          {productExpenses.map((item, index) => (
             <div key={index} className='flex justify-between items-center p-2 bg-gray-50 rounded-lg'>
               <span className='font-medium text-gray-700 text-sm truncate flex-1 mr-2'>
                 {item.name}

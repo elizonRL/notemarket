@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Input } from './Input'
+import LinearProgress from '@mui/material/LinearProgress'
 
 const BudgetControl = ({ totalSpent }) => {
   const [budget, setBudget] = useState(0)
@@ -13,12 +14,6 @@ const BudgetControl = ({ totalSpent }) => {
     if (percentage >= 100) return 'text-red-600'
     if (percentage >= 80) return 'text-yellow-600'
     return 'text-green-600'
-  }
-
-  const getBarColor = () => {
-    if (percentage >= 100) return 'bg-red-500'
-    if (percentage >= 80) return 'bg-yellow-500'
-    return 'bg-green-500'
   }
 
   const cancelPresupuesto = () => {
@@ -100,12 +95,20 @@ const BudgetControl = ({ totalSpent }) => {
               <span>Progreso</span>
               <span>{percentage.toFixed(1)}%</span>
             </div>
-            <div className='w-full bg-gray-200 rounded-full h-4'>
-              <div
-                className={`h-4 rounded-full transition-all duration-500 ${getBarColor()}`}
-                style={{ width: `${Math.min(percentage, 100)}%` }}
-              />
-            </div>
+            <LinearProgress
+              variant='determinate'
+              value={Math.min(percentage, 100)}
+              sx={{
+                height: 13,
+                borderRadius: 5,
+                backgroundColor: '#e5e7eb',
+                '& .MuiLinearProgress-bar': {
+                  borderRadius: 5,
+                  backgroundColor: percentage >= 100 ? '#ef4444' : percentage >= 60 ? '#f97316' : '#10b981',
+                  transition: 'background-color 0.3s ease'
+                }
+              }}
+            />
           </aside>
 
           {percentage >= 100 && (

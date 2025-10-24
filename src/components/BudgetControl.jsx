@@ -34,7 +34,7 @@ const BudgetControl = ({ totalSpent }) => {
       </section>
 
       {showBudgetForm && (
-        <section className='mb-4 p-4 bg-gray-50 rounded-lg'>
+        <section className='mb-4 p-4 bg-gray-50 rounded-lg animate-fadeIn'>
           <Input
             ref={inputRef}
             type='number'

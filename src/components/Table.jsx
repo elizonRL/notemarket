@@ -1,15 +1,25 @@
 import { Input } from './Input'
+import { useProductContext } from '../contex/productContex'
 
-const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
+const Table = () => {
+  const { products, setProducts } = useProductContext()
   const total = products.reduce(
-    (acc, item) => acc + item.quantity * item.price,
+    (acc, product) => acc + product.quantity * product.price,
     0
   )
 
   const handleQuantityChange = (index, newQuantity) => {
     if (newQuantity > 0) {
-      onUpdateProduct(index, { ...products[index], quantity: parseInt(newQuantity) })
+      /* onUpdateProduct(index, { ...products[index], quantity: parseInt(newQuantity) }) */
+      setProducts((prevProducts) =>
+        prevProducts.map((product, i) =>
+          i === index ? { ...product, quantity: parseInt(newQuantity) } : product
+        )
+      )
     }
+  }
+  const handleDeleteProduct = (index) => {
+    setProducts((prevProducts) => prevProducts.filter((_, i) => i !== index))
   }
 
   return (
@@ -26,30 +36,30 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
 
       {/* Productos */}
       <div className='divide-y divide-gray-100'>
-        {products.map((item, i) => (
+        {products.map((product, i) => (
           <div key={i} className='p-4 hover:bg-gray-50 transition-colors duration-200'>
             {/* Vista desktop */}
             <div className='hidden md:grid md:grid-cols-6 items-center gap-4'>
-              <div className='font-medium text-gray-900'>{item.name}</div>
+              <div className='font-medium text-gray-900'>{product.name}</div>
               <div className='text-center'>
                 <span className='inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
-                  {item.category}
+                  {product.category}
                 </span>
               </div>
               <div className='text-center'>
                 <Input
                   type='number'
-                  value={item.quantity}
+                  value={product.quantity}
                   onChange={(e) => handleQuantityChange(i, e.target.value)}
                   className='w-16 px-2 py-1 border border-gray-300 rounded text-center'
                   min='1'
                 />
               </div>
-              <div className='text-center text-green-600 font-semibold'>${item.price.toFixed(2)}</div>
-              <div className='text-center font-bold text-gray-900'>${(item.quantity * item.price).toFixed(2)}</div>
+              <div className='text-center text-green-600 font-semibold'>${product.price.toFixed(2)}</div>
+              <div className='text-center font-bold text-gray-900'>${(product.quantity * product.price).toFixed(2)}</div>
               <div className='text-center'>
                 <button
-                  onClick={() => onDeleteProduct(i)}
+                  onClick={() => handleDeleteProduct(i)}
                   className='text-red-500 rounded-md hover:inset-shadow-sm inset-shadow-red-700 p-1'
                 >
                   🗑️
@@ -60,9 +70,9 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
             {/* Vista móvil */}
             <div className='md:hidden space-y-3'>
               <div className='flex justify-between items-start'>
-                <h3 className='font-semibold text-gray-900 flex-1'>{item.name}</h3>
+                <h3 className='font-semibold text-gray-900 flex-1'>{product.name}</h3>
                 <button
-                  onClick={() => onDeleteProduct(i)}
+                  onClick={() => handleDeleteProduct(i)}
                   className='text-red-500 hover:text-red-700 ml-2'
                 >
                   🗑️
@@ -70,31 +80,31 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
               </div>
               <div className='flex justify-between items-center'>
                 <span className='inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
-                  {item.category}
+                  {product.category}
                 </span>
-                <span className='font-bold text-gray-900'>${(item.quantity * item.price).toFixed(2)}</span>
+                <span className='font-bold text-gray-900'>${(product.quantity * product.price).toFixed(2)}</span>
               </div>
               <div className='flex justify-between items-center text-sm text-gray-600'>
                 <div className='flex items-center gap-2'>
                   <span>Cantidad:</span>
                   <div className='flex items-center gap-1 bg-gray-100 rounded-lg p-1'>
                     <button
-                      onClick={() => handleQuantityChange(i, item.quantity - 1)}
+                      onClick={() => handleQuantityChange(i, product.quantity - 1)}
                       className='w-8 h-8 bg-red-500 text-white rounded-md font-bold hover:bg-red-600 flex items-center justify-center'
-                      disabled={item.quantity <= 1}
+                      disabled={product.quantity <= 1}
                     >
                       -
                     </button>
-                    <span className='w-8 text-center font-bold'>{item.quantity}</span>
+                    <span className='w-8 text-center font-bold'>{product.quantity}</span>
                     <button
-                      onClick={() => handleQuantityChange(i, item.quantity + 1)}
+                      onClick={() => handleQuantityChange(i, product.quantity + 1)}
                       className='w-8 h-8 bg-green-500 text-white rounded-md font-bold hover:bg-green-600 flex items-center justify-center'
                     >
                       +
                     </button>
                   </div>
                 </div>
-                <span>${item.price.toFixed(2)} c/u</span>
+                <span>${product.price.toFixed(2)} c/u</span>
               </div>
             </div>
           </div>

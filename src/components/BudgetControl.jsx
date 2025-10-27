@@ -1,8 +1,11 @@
 import { useState, useRef } from 'react'
 import { Input } from './Input'
 import LinearProgress from '@mui/material/LinearProgress'
+import { useProductContext } from '../contex/productContex'
 
-const BudgetControl = ({ totalSpent }) => {
+const BudgetControl = () => {
+  const { products } = useProductContext()
+  const totalSpent = products.reduce((sum, product) => sum + (product.quantity * product.price), 0)
   const [budget, setBudget] = useState(0)
   const [showBudgetForm, setShowBudgetForm] = useState(false)
   const inputRef = useRef(null)

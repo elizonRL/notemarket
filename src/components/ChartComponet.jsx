@@ -23,8 +23,8 @@ const ChartComponent = ({ dataChart }) => {
               direction: 'column',
               position: { vertical: 'top', horizontal: 'middle' },
               padding: 0,
-              itemMarkWidth: 12,
-              itemMarkHeight: 12,
+              markerWidth: 12,
+              markerHeight: 12,
               markGap: 9,
               itemGap: 4,
               labelStyle: {

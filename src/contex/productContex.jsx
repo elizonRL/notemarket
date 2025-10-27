@@ -12,5 +12,6 @@ export const ProductProvider = ({ children }) => {
 }
 
 export const useProductContext = () => {
-  return useContext(ProductContext)
+  const context = useContext(ProductContext)
+  return context
 }

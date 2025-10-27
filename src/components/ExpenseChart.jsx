@@ -3,8 +3,12 @@ import { useChartData } from '../hooks/useChartData.js'
 import ChartComponent from './ChartComponet.jsx'
 import ListComponent from './ListComponet.jsx'
 import ArticleComponent from './ArticleComponent.jsx'
+import { useProductContext } from '../contex/productContex'
 
-const ExpenseChart = ({ products }) => {
+import { usetotalExpense } from '../hooks/useTotalExpense.js'
+
+const ExpenseChart = () => {
+  const { products } = useProductContext()
   if (products.length === 0) return null
 
   const productExpenses = useMemo(() => products.map(product => ({
@@ -13,7 +17,7 @@ const ExpenseChart = ({ products }) => {
     percentage: 0
   })), [products])
 
-  const totalExpense = productExpenses.reduce((sum, item) => sum + item.total, 0)
+  const totalExpense = useMemo(() => usetotalExpense(productExpenses), [products])
 
   productExpenses.forEach(item => {
     item.percentage = (item.total / totalExpense) * 100

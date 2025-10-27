@@ -5,15 +5,12 @@ import FormSection from '@/FormSection'
 import ExpenseChart from '@/ExpenseChart'
 import BudgetControl from '@/BudgetControl'
 import { useProductContext } from './contex/productContex'
+/* import { usetotalExpense } from './hooks/useTotalExpense' */
 
 function App () {
   /* const [products, setProducts] = useState([]) */
   const [showForm, setShowForm] = useState(false)
-  const { products, setProducts } = useProductContext()
-
-  const handleAddProduct = (Product) => {
-    setProducts((prevProducts) => [...prevProducts, Product])
-  }
+  const { products } = useProductContext()
 
   return (
     <>
@@ -35,7 +32,7 @@ function App () {
                 >
                   {showForm ? '✕ Cerrar formulario' : '+ Agregar producto'}
                 </button>
-                {/*  {products.length > 0 && (
+                {/* {products.length > 0 && (
                   <div className='bg-green-100 text-green-800 px-6 py-3 rounded-lg font-bold'>
                     Total: ${totalSpent.toFixed(2)}
                   </div>
@@ -45,7 +42,7 @@ function App () {
 
             {showForm && (
               <div className='animate-fadeIn'>
-                <FormSection handleAddProduct={handleAddProduct} onClose={() => setShowForm(false)} />
+                <FormSection onClose={() => setShowForm(false)} />
               </div>
             )}
           </div>

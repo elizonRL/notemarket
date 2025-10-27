@@ -3,6 +3,7 @@ import { useProductContext } from '../contex/productContex'
 
 const Table = () => {
   const { products, setProducts } = useProductContext()
+
   const total = products.reduce(
     (acc, product) => acc + product.quantity * product.price,
     0
@@ -10,7 +11,6 @@ const Table = () => {
 
   const handleQuantityChange = (index, newQuantity) => {
     if (newQuantity > 0) {
-      /* onUpdateProduct(index, { ...products[index], quantity: parseInt(newQuantity) }) */
       setProducts((prevProducts) =>
         prevProducts.map((product, i) =>
           i === index ? { ...product, quantity: parseInt(newQuantity) } : product

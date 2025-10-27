@@ -24,13 +24,7 @@ const ChartComponent = ({ dataChart }) => {
               position: { vertical: 'top', horizontal: 'middle' },
               padding: 0,
               markerWidth: 12,
-              markerHeight: 12,
-              markGap: 9,
-              itemGap: 4,
-              labelStyle: {
-                fontSize: 16,
-                fontWeight: 900
-              }
+              markerHeight: 12
             }
           }}
           sx={{

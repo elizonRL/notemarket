@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import { Input } from './Input'
+import { useProductContext } from '../contex/productContex'
 
-const FormSection = ({ handleAddProduct, onClose }) => {
+const FormSection = ({ onClose }) => {
   const [productName, setProductName] = useState('')
   const [productPrice, setProductPrice] = useState('')
   const [productQuantity, setProductQuantity] = useState('')
   const [category, setCategory] = useState('')
   const [errors, setErrors] = useState({})
 
+  const { setProducts } = useProductContext()
+
+  const handleAddProduct = (Product) => {
+    setProducts((prevProducts) => [...prevProducts, Product])
+  }
   const categories = [
     { id: 1, value: '🥬 Frutas y Verduras' },
     { id: 2, value: '🥛 Lácteos' },
@@ -63,9 +69,8 @@ const FormSection = ({ handleAddProduct, onClose }) => {
               onChange={(e) => setProductName(e.target.value)}
               type='text'
               placeholder='Ej: Manzanas rojas'
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.name ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${errors.name ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
             {errors.name && <p className='text-red-500 text-sm mt-1'>{errors.name}</p>}
           </div>
@@ -77,9 +82,8 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.category ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${errors.category ? 'border-red-500' : 'border-gray-300'
+                }`}
             >
               <option value=''>Selecciona la categoría</option>
               {categories.map((cat) => (
@@ -99,9 +103,8 @@ const FormSection = ({ handleAddProduct, onClose }) => {
               type='number'
               min='1'
               placeholder='1'
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.quantity ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${errors.quantity ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
             {errors.quantity && <p className='text-red-500 text-sm mt-1'>{errors.quantity}</p>}
           </div>
@@ -117,9 +120,8 @@ const FormSection = ({ handleAddProduct, onClose }) => {
               step='0.01'
               min='0.01'
               placeholder='0.00'
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.price ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${errors.price ? 'border-red-500' : 'border-gray-300'
+                }`}
             />
             {errors.price && <p className='text-red-500 text-sm mt-1'>{errors.price}</p>}
           </div>

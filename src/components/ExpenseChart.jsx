@@ -9,6 +9,7 @@ import { usetotalExpense } from '../hooks/useTotalExpense.js'
 
 const ExpenseChart = () => {
   const { products } = useProductContext()
+
   if (products.length === 0) return null
 
   const productExpenses = useMemo(() => products.map(product => ({
@@ -17,7 +18,7 @@ const ExpenseChart = () => {
     percentage: 0
   })), [products])
 
-  const totalExpense = useMemo(() => usetotalExpense(productExpenses), [products])
+  const totalExpense = useMemo(() => usetotalExpense(products), [products])
 
   productExpenses.forEach(item => {
     item.percentage = (item.total / totalExpense) * 100

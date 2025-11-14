@@ -26,8 +26,8 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
 
       {/* Productos */}
       <div className='divide-y divide-gray-100'>
-        {products.map((item, i) => (
-          <div key={i} className='p-4 hover:bg-gray-50 transition-colors duration-200'>
+        {products.map((item, index) => (
+          <div key={index} className='p-4 hover:bg-gray-50 transition-colors duration-200'>
             {/* Vista desktop */}
             <div className='hidden md:grid md:grid-cols-6 items-center gap-4'>
               <div className='font-medium text-gray-900'>{item.name}</div>
@@ -40,7 +40,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
                 <Input
                   type='number'
                   value={item.quantity}
-                  onChange={(e) => handleQuantityChange(i, e.target.value)}
+                  onChange={(e) => handleQuantityChange(index, e.target.value)}
                   className='w-16 px-2 py-1 border border-gray-300 rounded text-center'
                   min='1'
                 />
@@ -49,7 +49,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
               <div className='text-center font-bold text-gray-900'>${(item.quantity * item.price).toFixed(2)}</div>
               <div className='text-center'>
                 <button
-                  onClick={() => onDeleteProduct(i)}
+                  onClick={() => onDeleteProduct(index)}
                   className='text-red-500 rounded-md hover:inset-shadow-sm inset-shadow-red-700 p-1'
                 >
                   🗑️
@@ -62,7 +62,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
               <div className='flex justify-between items-start'>
                 <h3 className='font-semibold text-gray-900 flex-1'>{item.name}</h3>
                 <button
-                  onClick={() => onDeleteProduct(i)}
+                  onClick={() => onDeleteProduct(index)}
                   className='text-red-500 hover:text-red-700 ml-2'
                 >
                   🗑️
@@ -79,7 +79,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
                   <span>Cantidad:</span>
                   <div className='flex items-center gap-1 bg-gray-100 rounded-lg p-1'>
                     <button
-                      onClick={() => handleQuantityChange(i, item.quantity - 1)}
+                      onClick={() => handleQuantityChange(index, item.quantity - 1)}
                       className='w-8 h-8 bg-red-500 text-white rounded-md font-bold hover:bg-red-600 flex items-center justify-center'
                       disabled={item.quantity <= 1}
                     >
@@ -87,7 +87,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
                     </button>
                     <span className='w-8 text-center font-bold'>{item.quantity}</span>
                     <button
-                      onClick={() => handleQuantityChange(i, item.quantity + 1)}
+                      onClick={() => handleQuantityChange(index, item.quantity + 1)}
                       className='w-8 h-8 bg-green-500 text-white rounded-md font-bold hover:bg-green-600 flex items-center justify-center'
                     >
                       +

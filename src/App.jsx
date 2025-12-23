@@ -4,6 +4,7 @@ import Header from '@/HeaderSection'
 import FormSection from '@/FormSection'
 import ExpenseChart from '@/ExpenseChart'
 import BudgetControl from '@/BudgetControl'
+import { ProductProvider } from './contex/productContex'
 
 function App () {
   const [products, setProducts] = useState([])

@@ -27,6 +27,7 @@ function App () {
   return (
     <>
       <Header />
+      <ProductProvider>
       <main>
         <section className='px-4 py-6'>
           <div className='max-w-4xl mx-auto space-y-6'>

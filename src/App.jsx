@@ -86,6 +86,7 @@ function App () {
           </div>
         </section>
       </main>
+      </ProductProvider>
     </>
   )
 }

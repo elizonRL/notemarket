@@ -7,24 +7,10 @@ import BudgetControl from '@/BudgetControl'
 import { ProductProvider } from './contex/productContex'
 
 function App () {
-  const [products, setProducts] = useState([])
+  /* const [products, setProducts] = useState([]) */
   const [showForm, setShowForm] = useState(false)
+  const { products } = useProductContext()
 
-  const handleAddProduct = (Product) => {
-    setProducts((prevProducts) => [...prevProducts, Product])
-  }
-
-  const handleUpdateProduct = (index, updatedProduct) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product, i) => i === index ? updatedProduct : product)
-    )
-  }
-
-  const handleDeleteProduct = (index) => {
-    setProducts((prevProducts) => prevProducts.filter((_, i) => i !== index))
-  }
-
-  const totalSpent = products.reduce((sum, product) => sum + (product.quantity * product.price), 0)
   return (
     <>
       <Header />
@@ -32,7 +18,7 @@ function App () {
       <main>
         <section className='px-4 py-6'>
           <div className='max-w-4xl mx-auto space-y-6'>
-            <BudgetControl totalSpent={totalSpent} />
+            <BudgetControl />
 
             <div className='text-center'>
               <h2 className='text-2xl font-bold mb-4 text-gray-800'>
@@ -45,17 +31,17 @@ function App () {
                 >
                   {showForm ? '✕ Cerrar formulario' : '+ Agregar producto'}
                 </button>
-                {products.length > 0 && (
+                {/* {products.length > 0 && (
                   <div className='bg-green-100 text-green-800 px-6 py-3 rounded-lg font-bold'>
                     Total: ${totalSpent.toFixed(2)}
                   </div>
-                )}
+                )} */}
               </div>
             </div>
 
             {showForm && (
               <div className='animate-fadeIn'>
-                <FormSection handleAddProduct={handleAddProduct} onClose={() => setShowForm(false)} />
+                <FormSection onClose={() => setShowForm(false)} />
               </div>
             )}
           </div>
@@ -73,11 +59,7 @@ function App () {
                 )
               : (
                 <>
-                  <Table
-                    products={products}
-                    onUpdateProduct={handleUpdateProduct}
-                    onDeleteProduct={handleDeleteProduct}
-                  />
+                  <Table />
                   <div className='mt-8'>
                     <ExpenseChart products={products} />
                   </div>

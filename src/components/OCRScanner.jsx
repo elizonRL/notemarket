@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { useOCR } from '@/hooks/useOCR'
+import { IconCamera, IconImage, IconSearch, IconClose, IconCheck } from './Icons'
 
 const OCRScanner = ({ onScanComplete, onClose }) => {
   const [imagePreview, setImagePreview] = useState(null)
@@ -104,9 +105,9 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl"
+            className="text-gray-500 hover:text-gray-700 p-1"
           >
-            ×
+            <IconClose className="w-6 h-6" />
           </button>
         </div>
 
@@ -121,17 +122,19 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
               
               <button
                 onClick={startCamera}
-                className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all"
+                className="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
               >
-                📸 Usar Cámara
+                <IconCamera className="w-5 h-5" />
+                Usar Camara
               </button>
               
               <div className="relative">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all"
+                  className="w-full py-3 bg-gradient-to-r from-violet-500 to-purple-600 text-white rounded-xl font-medium hover:from-violet-600 hover:to-purple-700 transition-all flex items-center justify-center gap-2"
                 >
-                  🖼️ Seleccionar de Galería
+                  <IconImage className="w-5 h-5" />
+                  Seleccionar de Galeria
                 </button>
                 <input
                   ref={fileInputRef}
@@ -155,13 +158,14 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
               <div className="flex gap-3">
                 <button
                   onClick={capturePhoto}
-                  className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-medium"
+                  className="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-medium flex items-center justify-center gap-2"
                 >
-                  📸 Capturar
+                  <IconCamera className="w-5 h-5" />
+                  Capturar
                 </button>
                 <button
                   onClick={stopCamera}
-                  className="flex-1 py-3 bg-gray-500 text-white rounded-lg font-medium"
+                  className="flex-1 py-3 bg-gray-400 text-white rounded-xl font-medium"
                 >
                   Cancelar
                 </button>
@@ -191,15 +195,16 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
                 <div className="flex gap-3">
                   <button
                     onClick={handleScan}
-                    className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+                    className="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 flex items-center justify-center gap-2"
                   >
-                    🔍 Escanear Texto
+                    <IconSearch className="w-5 h-5" />
+                    Escanear Texto
                   </button>
                   <button
                     onClick={handleReset}
-                    className="py-3 px-4 bg-gray-500 text-white rounded-lg font-medium"
+                    className="py-3 px-4 bg-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-300"
                   >
-                    ↩️
+                    <IconClose className="w-5 h-5" />
                   </button>
                 </div>
               )}
@@ -208,8 +213,11 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
 
           {scannedData && (
             <div className="space-y-4">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <h4 className="font-bold text-green-800 mb-3">✅ Datos Extraídos</h4>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                <h4 className="font-bold text-emerald-800 mb-3 flex items-center gap-2">
+                  <IconCheck className="w-5 h-5" />
+                  Datos Extraidos
+                </h4>
                 
                 <div className="space-y-2">
                   <div>
@@ -232,13 +240,14 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
               <div className="flex gap-3">
                 <button
                   onClick={handleConfirm}
-                  className="flex-1 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700"
+                  className="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 flex items-center justify-center gap-2"
                 >
-                  ✓ Confirmar
+                  <IconCheck className="w-5 h-5" />
+                  Confirmar
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex-1 py-3 bg-gray-500 text-white rounded-lg font-medium"
+                  className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-300"
                 >
                   Escanear Otra vez
                 </button>

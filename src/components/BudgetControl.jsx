@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Input } from './Input'
 import LinearProgress from '@mui/material/LinearProgress'
+import { IconMoney, IconAlert, IconWarning } from './Icons'
 
 const BudgetControl = ({ totalSpent }) => {
   const [budget, setBudget] = useState(0)
@@ -22,14 +23,18 @@ const BudgetControl = ({ totalSpent }) => {
   }
 
   return (
-    <article className='bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
+    <article className='bg-white rounded-2xl shadow-xl p-6 border border-gray-100 overflow-hidden relative'>
+      <div className='absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-emerald-500 to-teal-500'></div>
       <section className='flex justify-between items-center mb-4'>
-        <h3 className='text-xl font-bold text-gray-800'>💰 Control de Presupuesto</h3>
+        <h3 className='text-xl font-bold text-gray-800 flex items-center gap-2'>
+          <IconMoney className="w-5 h-5 text-emerald-600" />
+          Presupuesto
+        </h3>
         <button
           onClick={() => setShowBudgetForm(!showBudgetForm)}
-          className='text-blue-600 hover:text-blue-800 font-medium'
+          className='text-emerald-600 hover:text-emerald-800 font-semibold text-sm px-3 py-1 rounded-full hover:bg-emerald-50 transition-colors'
         >
-          {budget > 0 ? 'Cambiar' : 'Establecer'}
+          {budget > 0 ? 'Editar' : 'Establecer'}
         </button>
       </section>
 
@@ -113,12 +118,18 @@ const BudgetControl = ({ totalSpent }) => {
 
           {percentage >= 100 && (
             <div className='mt-3 p-3 bg-red-100 border border-red-300 rounded-lg'>
-              <p className='text-red-700 font-medium'>🚨 ¡Has excedido tu presupuesto!</p>
+              <p className='text-red-700 font-medium flex items-center gap-2'>
+                <IconAlert className="w-4 h-4" />
+                Has excedido tu presupuesto!
+              </p>
             </div>
           )}
           {percentage >= 80 && percentage < 100 && (
             <div className='mt-3 p-3 bg-yellow-100 border border-yellow-300 rounded-lg'>
-              <p className='text-yellow-700 font-medium'>⚠️ Te acercas al límite de tu presupuesto</p>
+              <p className='text-yellow-700 font-medium flex items-center gap-2'>
+                <IconWarning className="w-4 h-4" />
+                Te acercas al limite de tu presupuesto
+              </p>
             </div>
           )}
         </>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Input } from './Input'
 import OCRScanner from './OCRScanner'
+import { IconCheck, IconScan, IconClose } from './Icons'
 
 const FormSection = ({ handleAddProduct, onClose }) => {
   const [showOCR, setShowOCR] = useState(false)
@@ -137,22 +138,25 @@ const FormSection = ({ handleAddProduct, onClose }) => {
         <div className='flex flex-col sm:flex-row gap-3 pt-4'>
           <button
             type='submit'
-            className='flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-102 shadow-lg'
+            className='flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-3 px-6 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-700 transition-all duration-300 transform hover:scale-102 shadow-lg flex items-center justify-center gap-2'
           >
-            ✓ Agregar producto
+            <IconCheck className="w-5 h-5" />
+            Agregar producto
           </button>
           <button
             type='button'
             onClick={() => setShowOCR(true)}
-            className='flex-1 sm:flex-none bg-gradient-to-r from-purple-500 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300'
+            className='flex-1 sm:flex-none bg-gradient-to-r from-violet-500 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:from-violet-600 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-2'
           >
-            📷 Escanear
+            <IconScan className="w-5 h-5" />
+            Escanear
           </button>
           <button
             type='button'
             onClick={onClose}
-            className='flex-1 sm:flex-none bg-gray-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-600 transition-all duration-300'
+            className='flex-1 sm:flex-none bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2'
           >
+            <IconClose className="w-5 h-5" />
             Cancelar
           </button>
         </div>

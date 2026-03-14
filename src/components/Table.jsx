@@ -1,4 +1,5 @@
 import { Input } from './Input'
+import { IconTrash } from './Icons'
 
 const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
   const total = products.reduce(
@@ -13,11 +14,11 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
   }
 
   return (
-    <div className='bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100'>
+    <div className='bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100'>
       {/* Header para desktop */}
-      <div className='hidden md:grid md:grid-cols-6 bg-gradient-to-r from-gray-50 to-gray-100 p-4 font-semibold text-gray-700 border-b'>
+      <div className='hidden md:grid md:grid-cols-6 bg-gradient-to-r from-emerald-50 to-teal-50 p-4 font-semibold text-gray-700 border-b'>
         <div>Producto</div>
-        <div className='text-center'>Categoría</div>
+        <div className='text-center'>Categoria</div>
         <div className='text-center'>Cantidad</div>
         <div className='text-center'>Precio unitario</div>
         <div className='text-center'>Subtotal</div>
@@ -32,7 +33,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
             <div className='hidden md:grid md:grid-cols-6 items-center gap-4'>
               <div className='font-medium text-gray-900'>{item.name}</div>
               <div className='text-center'>
-                <span className='inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
+                <span className='inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800'>
                   {item.category}
                 </span>
               </div>
@@ -45,31 +46,31 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
                   min='1'
                 />
               </div>
-              <div className='text-center text-green-600 font-semibold'>${item.price.toFixed(2)}</div>
+              <div className='text-center text-emerald-600 font-semibold'>${item.price.toFixed(2)}</div>
               <div className='text-center font-bold text-gray-900'>${(item.quantity * item.price).toFixed(2)}</div>
               <div className='text-center'>
                 <button
                   onClick={() => onDeleteProduct(i)}
-                  className='text-red-500 rounded-md hover:inset-shadow-sm inset-shadow-red-700 p-1'
+                  className='text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors'
                 >
-                  🗑️
+                  <IconTrash className="w-5 h-5" />
                 </button>
               </div>
             </div>
 
-            {/* Vista móvil */}
+            {/* Vista movil */}
             <div className='md:hidden space-y-3'>
               <div className='flex justify-between items-start'>
                 <h3 className='font-semibold text-gray-900 flex-1'>{item.name}</h3>
                 <button
                   onClick={() => onDeleteProduct(i)}
-                  className='text-red-500 hover:text-red-700 ml-2'
+                  className='text-red-500 hover:text-red-700 p-2'
                 >
-                  🗑️
+                  <IconTrash className="w-5 h-5" />
                 </button>
               </div>
               <div className='flex justify-between items-center'>
-                <span className='inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
+                <span className='inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800'>
                   {item.category}
                 </span>
                 <span className='font-bold text-gray-900'>${(item.quantity * item.price).toFixed(2)}</span>
@@ -88,7 +89,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
                     <span className='w-8 text-center font-bold'>{item.quantity}</span>
                     <button
                       onClick={() => handleQuantityChange(i, item.quantity + 1)}
-                      className='w-8 h-8 bg-green-500 text-white rounded-md font-bold hover:bg-green-600 flex items-center justify-center'
+                      className='w-8 h-8 bg-emerald-500 text-white rounded-md font-bold hover:bg-emerald-600 flex items-center justify-center'
                     >
                       +
                     </button>
@@ -102,10 +103,10 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
       </div>
 
       {/* Total */}
-      <div className='bg-gradient-to-r from-green-50 to-green-100 p-4 border-t-2 border-green-200'>
+      <div className='bg-gradient-to-r from-emerald-50 to-teal-50 p-4 border-t-2 border-emerald-200'>
         <div className='flex justify-between items-center'>
           <span className='text-lg font-semibold text-gray-700'>Total general:</span>
-          <span className='text-2xl font-bold text-green-600'>${total.toFixed(2)}</span>
+          <span className='text-2xl font-bold text-emerald-600'>${total.toFixed(2)}</span>
         </div>
         <div className='text-sm text-gray-500 mt-1'>
           {products.length} producto{products.length !== 1 ? 's' : ''} en total

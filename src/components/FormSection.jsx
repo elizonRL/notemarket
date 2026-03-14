@@ -1,7 +1,16 @@
 import { useState } from 'react'
 import { Input } from './Input'
+import OCRScanner from './OCRScanner'
 
 const FormSection = ({ handleAddProduct, onClose }) => {
+  const [showOCR, setShowOCR] = useState(false)
+
+  const handleOCRScanComplete = (data) => {
+    setProductName(data.name)
+    setProductPrice(data.price > 0 ? data.price.toString() : '')
+    setProductQuantity(data.quantity > 0 ? data.quantity.toString() : '1')
+    setShowOCR(false)
+  }
   const [productName, setProductName] = useState('')
   const [productPrice, setProductPrice] = useState('')
   const [productQuantity, setProductQuantity] = useState('')
@@ -134,6 +143,13 @@ const FormSection = ({ handleAddProduct, onClose }) => {
           </button>
           <button
             type='button'
+            onClick={() => setShowOCR(true)}
+            className='flex-1 sm:flex-none bg-gradient-to-r from-purple-500 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300'
+          >
+            📷 Escanear
+          </button>
+          <button
+            type='button'
             onClick={onClose}
             className='flex-1 sm:flex-none bg-gray-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-600 transition-all duration-300'
           >
@@ -141,6 +157,13 @@ const FormSection = ({ handleAddProduct, onClose }) => {
           </button>
         </div>
       </form>
+
+      {showOCR && (
+        <OCRScanner
+          onScanComplete={handleOCRScanComplete}
+          onClose={() => setShowOCR(false)}
+        />
+      )}
     </div>
   )
 }

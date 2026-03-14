@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { IconCart } from './Icons'
+import { getCategoryIcon, getCategoryColor } from './Icons/categories'
 
 const ExpenseChart = ({ products }) => {
   if (products.length === 0) return null
@@ -39,23 +40,6 @@ const ExpenseChart = ({ products }) => {
     item.percentage = (item.total / totalExpense) * 100
   })
 
-  // Colores para las categorías
-  const categoryColors = {
-    '🥬 Frutas y Verduras': { bg: 'bg-green-500', light: 'bg-green-100', text: 'text-green-700' },
-    '🥛 Lácteos': { bg: 'bg-blue-500', light: 'bg-blue-100', text: 'text-blue-700' },
-    '🍞 Panadería': { bg: 'bg-amber-500', light: 'bg-amber-100', text: 'text-amber-700' },
-    '🍖 Carnes': { bg: 'bg-red-500', light: 'bg-red-100', text: 'text-red-700' },
-    '🥫 Enlatados': { bg: 'bg-orange-500', light: 'bg-orange-100', text: 'text-orange-700' },
-    '🧽 Limpieza': { bg: 'bg-cyan-500', light: 'bg-cyan-100', text: 'text-cyan-700' },
-    '🍪 Snacks': { bg: 'bg-pink-500', light: 'bg-pink-100', text: 'text-pink-700' },
-    '🧊 Congelados': { bg: 'bg-sky-500', light: 'bg-sky-100', text: 'text-sky-700' },
-    '🍚 Arroz y Cereales': { bg: 'bg-yellow-500', light: 'bg-yellow-100', text: 'text-yellow-700' }
-  }
-
-  const getCategoryColor = (category) => {
-    return categoryColors[category] || { bg: 'bg-emerald-500', light: 'bg-emerald-100', text: 'text-emerald-700' }
-  }
-
   return (
     <div className='bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100'>
       <h3 className='text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 text-center flex items-center justify-center gap-2'>
@@ -87,11 +71,14 @@ const ExpenseChart = ({ products }) => {
         
         {categoryExpenses.map((item, index) => {
           const colors = getCategoryColor(item.category)
+          const CategoryIcon = getCategoryIcon(item.category)
           return (
             <div key={index} className='space-y-1'>
               <div className='flex justify-between items-center text-sm'>
                 <span className='font-medium text-gray-700 flex items-center gap-2'>
-                  <span className={`w-3 h-3 rounded-full ${colors.bg}`}></span>
+                  <span className={`p-1 rounded-lg ${colors.light}`}>
+                    <CategoryIcon className={`w-4 h-4 ${colors.text}`} />
+                  </span>
                   {item.category}
                 </span>
                 <span className='font-bold text-gray-800'>
@@ -123,13 +110,14 @@ const ExpenseChart = ({ products }) => {
             .sort((a, b) => b.total - a.total)
             .map((item, index) => {
               const colors = getCategoryColor(item.category)
+              const CategoryIcon = getCategoryIcon(item.category)
               return (
                 <div 
                   key={index} 
                   className='flex justify-between items-center p-2 rounded-lg hover:bg-gray-50 transition-colors'
                 >
                   <div className='flex items-center gap-2 flex-1 min-w-0'>
-                    <span className={`w-2 h-2 rounded-full flex-shrink-0 ${colors.bg}`}></span>
+                    <CategoryIcon className={`w-4 h-4 ${colors.text} flex-shrink-0`} />
                     <span className='font-medium text-gray-700 text-sm truncate'>
                       {item.name}
                     </span>

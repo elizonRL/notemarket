@@ -19,15 +19,24 @@ const FormSection = ({ handleAddProduct, onClose }) => {
   const [errors, setErrors] = useState({})
 
   const categories = [
-    { id: 1, value: '🥬 Frutas y Verduras' },
-    { id: 2, value: '🥛 Lácteos' },
-    { id: 3, value: '🍞 Panadería' },
-    { id: 4, value: '🍖 Carnes' },
-    { id: 5, value: '🥫 Enlatados' },
-    { id: 6, value: '🧽 Limpieza' },
-    { id: 7, value: '🍪 Snacks' },
-    { id: 8, value: '🧊 Congelados' },
-    { id: 9, value: '🍚 Arroz y Cereales' }
+    { id: 1, value: 'Frutas y Verduras', icon: 'frutas' },
+    { id: 2, value: 'Lácteos', icon: 'dairy' },
+    { id: 3, value: 'Panadería', icon: 'bakery' },
+    { id: 4, value: 'Carnes', icon: 'meat' },
+    { id: 5, value: 'Pescados y Mariscos', icon: 'fish' },
+    { id: 6, value: 'Fiambres y Embutidos', icon: 'ham' },
+    { id: 7, value: 'Bebidas', icon: 'drinks' },
+    { id: 8, value: 'Congelados', icon: 'frozen' },
+    { id: 9, value: 'Enlatados', icon: 'canned' },
+    { id: 10, value: 'Arroz, Pasta y Cereales', icon: 'rice' },
+    { id: 11, value: 'Aceites y Aderezos', icon: 'oil' },
+    { id: 12, value: 'Condimentos y Especias', icon: 'spices' },
+    { id: 13, value: 'Café, Té y Chocolate', icon: 'coffee' },
+    { id: 14, value: 'Galletitas y Dulces', icon: 'cookies' },
+    { id: 15, value: 'Limpieza', icon: 'cleaning' },
+    { id: 16, value: 'Higiene Personal', icon: 'hygiene' },
+    { id: 17, value: 'Perfumería', icon: 'perfume' },
+    { id: 18, value: 'Otros', icon: 'other' }
   ]
 
   const validateForm = () => {

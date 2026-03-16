@@ -20,7 +20,7 @@ describe('useOCR Hook', () => {
 
   test('inicializa con estados por defecto', () => {
     const { result } = renderHook(() => useOCR())
-    
+
     expect(result.current.isProcessing).toBe(false)
     expect(result.current.progress).toBe(0)
     expect(result.current.error).toBe(null)
@@ -35,7 +35,7 @@ describe('useOCR Hook', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     await act(async () => {
       await result.current.processImage('test-image.jpg')
     })
@@ -48,7 +48,7 @@ describe('useOCR Hook', () => {
     mockRecognize.mockRejectedValue(new Error('OCR failed'))
 
     const { result } = renderHook(() => useOCR())
-    
+
     await act(async () => {
       const output = await result.current.processImage('test-image.jpg')
       expect(output.success).toBe(false)
@@ -60,14 +60,14 @@ describe('useOCR Hook', () => {
 
   test('actualiza progreso durante procesamiento', async () => {
     let progressCallback
-    
+
     mockRecognize.mockImplementation((image, lang, options) => {
       progressCallback = options.logger
       return Promise.resolve({ data: { text: 'Test' } })
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     await act(async () => {
       await result.current.processImage('test-image.jpg')
     })
@@ -84,14 +84,14 @@ describe('useOCR Hook', () => {
 describe('parseProductText - Extracción de datos', () => {
   // Para testar la función de parsing sin el hook completo,
   // necesitamos exportar la función o recrear el escenario
-  
+
   test('extrae precio con formato $XX.XX', async () => {
     mockRecognize.mockResolvedValue({
       data: { text: 'Leche Entera\n$3.50\nx1' }
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')
@@ -106,7 +106,7 @@ describe('parseProductText - Extracción de datos', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')
@@ -121,7 +121,7 @@ describe('parseProductText - Extracción de datos', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')
@@ -136,7 +136,7 @@ describe('parseProductText - Extracción de datos', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')
@@ -151,7 +151,7 @@ describe('parseProductText - Extracción de datos', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')
@@ -167,7 +167,7 @@ describe('parseProductText - Extracción de datos', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')
@@ -182,7 +182,7 @@ describe('parseProductText - Extracción de datos', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')
@@ -199,7 +199,7 @@ describe('parseProductText - Extracción de datos', () => {
     })
 
     const { result } = renderHook(() => useOCR())
-    
+
     let output
     await act(async () => {
       output = await result.current.processImage('test.jpg')

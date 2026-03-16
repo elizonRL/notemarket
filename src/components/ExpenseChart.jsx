@@ -41,7 +41,7 @@ const ExpenseChart = ({ products }) => {
   if (productExpenses.length === 0) return null
 
   const totalExpense = productExpenses.reduce((sum, item) => sum + item.total, 0)
-  
+
   categoryExpenses.forEach(item => {
     item.percentage = (item.total / totalExpense) * 100
   })
@@ -49,7 +49,7 @@ const ExpenseChart = ({ products }) => {
   return (
     <div className='bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100'>
       <h3 className='text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 text-center flex items-center justify-center gap-2'>
-        <IconCart className="w-5 h-5 text-jacarta-600" />
+        <IconCart className='w-5 h-5 text-jacarta-600' />
         Resumen de Compras
       </h3>
 
@@ -74,7 +74,7 @@ const ExpenseChart = ({ products }) => {
         <h4 className='font-semibold text-gray-700 text-sm uppercase tracking-wide'>
           Gasto por categoría
         </h4>
-        
+
         {categoryExpenses.map((item, index) => {
           const colors = getCategoryColor(item.category)
           const CategoryIcon = getCategoryIcon(item.category)
@@ -95,10 +95,10 @@ const ExpenseChart = ({ products }) => {
                 </span>
               </div>
               <div className='h-3 bg-gray-100 rounded-full overflow-hidden'>
-                <div 
+                <div
                   className={`h-full ${colors.bg} rounded-full transition-all duration-500`}
                   style={{ width: `${item.percentage}%` }}
-                ></div>
+                />
               </div>
             </div>
           )
@@ -110,7 +110,7 @@ const ExpenseChart = ({ products }) => {
         <h4 className='font-semibold text-gray-700 text-sm uppercase tracking-wide mb-3'>
           Detalle de productos
         </h4>
-        
+
         <div className='space-y-2 max-h-64 overflow-y-auto'>
           {productExpenses
             .sort((a, b) => b.total - a.total)
@@ -118,8 +118,8 @@ const ExpenseChart = ({ products }) => {
               const colors = getCategoryColor(item.category)
               const CategoryIcon = getCategoryIcon(item.category)
               return (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className='flex justify-between items-center p-2 rounded-lg hover:bg-gray-50 transition-colors'
                 >
                   <div className='flex items-center gap-2 flex-1 min-w-0'>

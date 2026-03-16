@@ -21,11 +21,11 @@ import App from './App'
 describe('Test App component', () => {
   test('renderiza el título principal', () => {
     render(<App />)
-    
+
     const element = screen.getByText('Mi Carrito de Compras')
     expect(element).toBeDefined()
   })
-  
+
   test('renderiza la sección de productos', () => {
     render(<App />)
 
@@ -42,7 +42,7 @@ describe('Test App component', () => {
 
   test('abre el formulario al hacer click en agregar', async () => {
     render(<App />)
-    
+
     const button = screen.getByRole('button', { name: /Agregar producto/i })
     await userEvent.click(button)
 

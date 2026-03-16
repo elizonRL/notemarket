@@ -80,7 +80,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
   }
 
   // Mostrar cantidad formateada
-  const displayQuantity = productQuantity 
+  const displayQuantity = productQuantity
     ? `${productQuantity} ${quantityUnit === 'unidades' ? 'ud(s)' : 'lb(s)'}`
     : '0'
 
@@ -91,7 +91,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center'>
-              <IconPlus className="w-5 h-5 text-white" />
+              <IconPlus className='w-5 h-5 text-white' />
             </div>
             <div>
               <h3 className='text-white font-bold text-lg'>Nuevo Producto</h3>
@@ -102,7 +102,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             onClick={onClose}
             className='w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors'
           >
-            <IconClose className="w-5 h-5 text-white" />
+            <IconClose className='w-5 h-5 text-white' />
           </button>
         </div>
       </div>
@@ -120,20 +120,19 @@ const FormSection = ({ handleAddProduct, onClose }) => {
               onChange={(e) => setProductName(e.target.value)}
               type='text'
               placeholder='Ej: Manzana roja orgánica'
-              className={`w-full px-4 py-3.5 pl-11 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${
-                errors.name ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
-              }`}
+              className={`w-full px-4 py-3.5 pl-11 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${errors.name ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                }`}
             />
             <div className='absolute left-4 top-1/2 -translate-y-1/2 text-jacarta-400'>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' />
               </svg>
             </div>
           </div>
           {errors.name && (
             <p className='text-danger-600 text-sm mt-1.5 flex items-center gap-1'>
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              <svg className='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'>
+                <path fillRule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z' clipRule='evenodd' />
               </svg>
               {errors.name}
             </p>
@@ -149,9 +148,8 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className={`w-full px-4 py-3.5 border-2 rounded-xl appearance-none cursor-pointer focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base bg-white ${
-                errors.category ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
-              }`}
+              className={`w-full px-4 py-3.5 border-2 rounded-xl appearance-none cursor-pointer focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base bg-white ${errors.category ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                }`}
             >
               <option value=''>Selecciona una categoría...</option>
               {categories.map((cat) => (
@@ -161,15 +159,15 @@ const FormSection = ({ handleAddProduct, onClose }) => {
               ))}
             </select>
             <div className='absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-jacarta-400'>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M19 9l-7 7-7-7' />
               </svg>
             </div>
           </div>
           {errors.category && (
             <p className='text-danger-600 text-sm mt-1.5 flex items-center gap-1'>
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              <svg className='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'>
+                <path fillRule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z' clipRule='evenodd' />
               </svg>
               {errors.category}
             </p>
@@ -182,33 +180,31 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             <label className='block text-sm font-semibold text-gray-700 mb-2'>
               Cantidad
             </label>
-            
+
             {/* Toggle unidades/libras */}
             <div className='flex mb-2 bg-gray-100 rounded-lg p-1'>
               <button
                 type='button'
                 onClick={() => setQuantityUnit('unidades')}
-                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all ${
-                  quantityUnit === 'unidades' 
-                    ? 'bg-white text-jacarta-700 shadow-sm' 
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all ${quantityUnit === 'unidades'
+                    ? 'bg-white text-jacarta-700 shadow-sm'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 Unidades
               </button>
               <button
                 type='button'
                 onClick={() => setQuantityUnit('libras')}
-                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all ${
-                  quantityUnit === 'libras' 
-                    ? 'bg-white text-jacarta-700 shadow-sm' 
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all ${quantityUnit === 'libras'
+                    ? 'bg-white text-jacarta-700 shadow-sm'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 Libras
               </button>
             </div>
-            
+
             <div className='relative'>
               <Input
                 value={productQuantity}
@@ -217,9 +213,8 @@ const FormSection = ({ handleAddProduct, onClose }) => {
                 step='0.01'
                 min='0.01'
                 placeholder='1'
-                className={`w-full px-4 py-3.5 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${
-                  errors.quantity ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
-                }`}
+                className={`w-full px-4 py-3.5 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${errors.quantity ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                  }`}
               />
               <div className='absolute right-4 top-1/2 -translate-y-1/2 text-jacarta-400 text-sm font-medium'>
                 {quantityUnit === 'unidades' ? 'ud(s)' : 'lb(s)'}
@@ -245,9 +240,8 @@ const FormSection = ({ handleAddProduct, onClose }) => {
                 step='0.01'
                 min='0.01'
                 placeholder='0.00'
-                className={`w-full px-4 py-3.5 pl-8 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${
-                  errors.price ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
-                }`}
+                className={`w-full px-4 py-3.5 pl-8 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${errors.price ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                  }`}
               />
             </div>
             {errors.price && (
@@ -282,25 +276,25 @@ const FormSection = ({ handleAddProduct, onClose }) => {
             type='submit'
             className='flex-1 bg-gradient-to-r from-jacarta-500 to-jacarta-600 text-white py-3.5 px-6 rounded-xl font-semibold hover:from-jacarta-600 hover:to-jacarta-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-jacarta-500/25 flex items-center justify-center gap-2'
           >
-            <IconCheck className="w-5 h-5" />
+            <IconCheck className='w-5 h-5' />
             <span>Agregar</span>
           </button>
-          
+
           <button
             type='button'
             onClick={() => setShowOCR(true)}
             className='flex-1 sm:flex-none bg-gradient-to-r from-warm-500 to-warm-600 text-white py-3.5 px-4 rounded-xl font-semibold hover:from-warm-600 hover:to-warm-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md'
           >
-            <IconScan className="w-5 h-5" />
+            <IconScan className='w-5 h-5' />
             <span className='text-sm'>Escanear</span>
           </button>
-          
+
           <button
             type='button'
             onClick={onClose}
             className='flex-1 sm:flex-none bg-gray-100 text-gray-600 py-3.5 px-4 rounded-xl font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2'
           >
-            <IconClose className="w-5 h-5" />
+            <IconClose className='w-5 h-5' />
             <span className='text-sm'>Cancelar</span>
           </button>
         </div>

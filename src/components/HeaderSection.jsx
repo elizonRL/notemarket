@@ -5,10 +5,10 @@ const Header = () => {
         <div className='flex items-center justify-center'>
           <div className='flex items-center gap-4'>
             <div className='bg-white/20 p-3 rounded-2xl backdrop-blur-sm shadow-inner'>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5Z"/>
-                <path d="M6 9.01V9"/>
-                <path d="m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19"/>
+              <svg xmlns='http://www.w3.org/2000/svg' className='w-10 h-10' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+                <path d='M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5Z'/>
+                <path d='M6 9.01V9'/>
+                <path d='m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19'/>
               </svg>
             </div>
             <div className='text-center sm:text-left'>

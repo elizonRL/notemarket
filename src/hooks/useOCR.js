@@ -50,7 +50,7 @@ export function useOCR() {
 
 function parseProductText(text) {
   const lines = text.split('\n').map(l => l.trim()).filter(l => l)
-  
+
   let productName = ''
   let price = 0
   let quantity = 1
@@ -83,7 +83,7 @@ function parseProductText(text) {
       const decimals = match[2] || '00'
       const priceStr = `${whole}.${decimals.padEnd(2, '0')}`
       price = parseFloat(priceStr) * pattern.multiplier
-      
+
       // Filtrar precios válidos (entre $0.10 y $9999)
       if (price >= 0.10 && price < 10000) {
         break
@@ -120,7 +120,7 @@ function parseProductText(text) {
   // 3. EXTRAER NOMBRE DEL PRODUCTO
   // ============================================
   // El nombre suele estar en las primeras líneas o cerca del precio
-  
+
   const excludePatterns = [
     /^(?:precio|cantidad|código|sku|ref|pes|peso|descuento|total|subtotal|iva|pvp)/i,
     /^\d+[.,]?\d*$/,                    // Solo números
@@ -135,14 +135,14 @@ function parseProductText(text) {
     const isExcluded = excludePatterns.some(pattern => pattern.test(line))
     const hasPrice = /\$\d+/.test(line)
     const isValidLength = line.length >= 3 && line.length <= 60
-    
+
     if (!isExcluded && !hasPrice && isValidLength) {
       // Limpiar el nombre
       productName = line
         .replace(/\s+/g, ' ')           // Espacios múltiples
         .replace(/^[^\w]+/, '')          // Símbolos al inicio
         .trim()
-      
+
       if (productName.length >= 3) {
         break
       }

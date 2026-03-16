@@ -1,8 +1,8 @@
-import { IconWarning, IconClose } from './Icons'
+import { IconWarning } from './Icons'
 
 /**
  * ConfirmModal - Componente reutilizable para confirmaciones
- * 
+ *
  * @param {boolean} isOpen - Control de visibilidad del modal
  * @param {string} title - Título del modal
  * @param {string} message - Mensaje de confirmación

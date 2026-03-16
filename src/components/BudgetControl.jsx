@@ -24,10 +24,10 @@ const BudgetControl = ({ totalSpent }) => {
 
   return (
     <article className='bg-white rounded-2xl shadow-xl p-6 border border-gray-100 overflow-hidden relative'>
-      <div className='absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-jacarta-500 to-jacarta-600'></div>
+      <div className='absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-jacarta-500 to-jacarta-600' />
       <section className='flex justify-between items-center mb-4'>
         <h3 className='text-xl font-bold text-gray-800 flex items-center gap-2'>
-          <IconMoney className="w-5 h-5 text-jacarta-600" />
+          <IconMoney className='w-5 h-5 text-jacarta-600' />
           Presupuesto
         </h3>
         <button
@@ -119,7 +119,7 @@ const BudgetControl = ({ totalSpent }) => {
           {percentage >= 100 && (
             <div className='mt-3 p-3 bg-red-100 border border-red-300 rounded-lg'>
               <p className='text-red-700 font-medium flex items-center gap-2'>
-                <IconAlert className="w-4 h-4" />
+                <IconAlert className='w-4 h-4' />
                 Has excedido tu presupuesto!
               </p>
             </div>
@@ -127,7 +127,7 @@ const BudgetControl = ({ totalSpent }) => {
           {percentage >= 80 && percentage < 100 && (
             <div className='mt-3 p-3 bg-yellow-100 border border-yellow-300 rounded-lg'>
               <p className='text-yellow-700 font-medium flex items-center gap-2'>
-                <IconWarning className="w-4 h-4" />
+                <IconWarning className='w-4 h-4' />
                 Te acercas al limite de tu presupuesto
               </p>
             </div>

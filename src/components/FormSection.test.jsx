@@ -75,7 +75,7 @@ describe('test para probar el formulario de agregar productos', async () => {
   test('Muestra errores si el formulario está incompleto', async () => {
     Component()
     const user = userEvent.setup()
-    
+
     const addButton = screen.getByRole('button', { name: /Agregar/i })
     await user.click(addButton)
 

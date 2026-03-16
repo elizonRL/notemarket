@@ -73,17 +73,17 @@ describe('ExpenseChart Component', () => {
 
   test('actualiza cuando cambian los productos', () => {
     const { rerender } = render(<ExpenseChart products={mockProducts} />)
-    
+
     expect(screen.getByText('$15.90')).toBeInTheDocument()
-    
+
     // Agregar otro producto
     const newProducts = [
       ...mockProducts,
       { name: 'Huevos', category: 'Lácteos', quantity: 1, price: 4.00 }
     ]
-    
+
     rerender(<ExpenseChart products={newProducts} />)
-    
+
     // Nuevo total: 15.90 + 4.00 = 19.90
     expect(screen.getByText('$19.90')).toBeInTheDocument()
     expect(screen.getByText('4 productos')).toBeInTheDocument()
@@ -93,7 +93,7 @@ describe('ExpenseChart Component', () => {
     const productsWithZero = [
       { name: 'Producto Gratis', category: 'Otros', quantity: 1, price: 0 }
     ]
-    
+
     render(<ExpenseChart products={productsWithZero} />)
     // Usar getAllByText ya que hay múltiples elementos con $0.00
     const zeros = screen.getAllByText('$0.00')

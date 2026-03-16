@@ -1,31 +1,58 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Input } from './Input'
+import OCRScanner from './OCRScanner'
+import { IconCheck, IconScan, IconClose, IconPlus } from './Icons'
 
 const FormSection = ({ handleAddProduct, onClose }) => {
+  const [showOCR, setShowOCR] = useState(false)
+
+  const handleOCRScanComplete = (data) => {
+    setProductName(data.name)
+    setProductPrice(data.price > 0 ? data.price.toString() : '')
+    setProductQuantity(data.quantity > 0 ? data.quantity.toString() : '1')
+    setShowOCR(false)
+  }
+
   const [productName, setProductName] = useState('')
   const [productPrice, setProductPrice] = useState('')
   const [productQuantity, setProductQuantity] = useState('')
+  const [quantityUnit, setQuantityUnit] = useState('unidades') // 'unidades' o 'libras'
   const [category, setCategory] = useState('')
   const [errors, setErrors] = useState({})
 
+  // Mantener cantidad según la unidad seleccionada (sin convertir)
+  const quantityInUnits = useMemo(() => {
+    const qty = parseFloat(productQuantity) || 0
+    return qty // Se guarda tal cual: libras = libras, unidades = unidades
+  }, [productQuantity])
+
   const categories = [
-    { id: 1, value: '🥬 Frutas y Verduras' },
-    { id: 2, value: '🥛 Lácteos' },
-    { id: 3, value: '🍞 Panadería' },
-    { id: 4, value: '🍖 Carnes' },
-    { id: 5, value: '🥫 Enlatados' },
-    { id: 6, value: '🧽 Limpieza' },
-    { id: 7, value: '🍪 Snacks' },
-    { id: 8, value: '🧊 Congelados' },
-    { id: 9, value: '🍚 Arroz y Cereales' }
+    { id: 1, value: 'Frutas y Verduras', icon: '🥬' },
+    { id: 2, value: 'Lácteos', icon: '🥛' },
+    { id: 3, value: 'Panadería', icon: '🥖' },
+    { id: 4, value: 'Carnes', icon: '🥩' },
+    { id: 5, value: 'Pescados y Mariscos', icon: '🐟' },
+    { id: 6, value: 'Fiambres y Embutidos', icon: '🍖' },
+    { id: 7, value: 'Bebidas', icon: '🥤' },
+    { id: 8, value: 'Congelados', icon: '🧊' },
+    { id: 9, value: 'Enlatados', icon: '🥫' },
+    { id: 10, value: 'Arroz, Pasta y Cereales', icon: '🍝' },
+    { id: 11, value: 'Aceites y Aderezos', icon: '🫒' },
+    { id: 12, value: 'Condimentos y Especias', icon: '🧂' },
+    { id: 13, value: 'Café, Té y Chocolate', icon: '☕' },
+    { id: 14, value: 'Galletitas y Dulces', icon: '🍪' },
+    { id: 15, value: 'Limpieza', icon: '🧹' },
+    { id: 16, value: 'Higiene Personal', icon: '🧴' },
+    { id: 17, value: 'Perfumería', icon: '🌸' },
+    { id: 18, value: 'Otros', icon: '📦' }
   ]
 
   const validateForm = () => {
     const newErrors = {}
     if (!productName.trim()) newErrors.name = 'El nombre es requerido'
-    if (!productPrice || productPrice <= 0) newErrors.price = 'El precio debe ser mayor a 0'
-    if (!productQuantity || productQuantity <= 0) newErrors.quantity = 'La cantidad debe ser mayor a 0'
-    if (!category) newErrors.category = 'Selecciona un tipo'
+    if (!productPrice || parseFloat(productPrice) <= 0) newErrors.price = 'El precio debe ser mayor a 0'
+    if (!productQuantity || parseFloat(productQuantity) <= 0) newErrors.quantity = 'La cantidad debe ser mayor a 0'
+    if (!category) newErrors.category = 'Selecciona una categoría'
     return newErrors
   }
 
@@ -36,12 +63,14 @@ const FormSection = ({ handleAddProduct, onClose }) => {
       handleAddProduct({
         name: productName,
         price: parseFloat(productPrice),
-        quantity: parseInt(productQuantity),
+        quantity: quantityInUnits,
+        quantityDisplay: `${productQuantity} ${quantityUnit}`,
         category
       })
       setProductName('')
       setProductPrice('')
       setProductQuantity('')
+      setQuantityUnit('unidades')
       setCategory('')
       setErrors({})
       onClose()
@@ -50,97 +79,233 @@ const FormSection = ({ handleAddProduct, onClose }) => {
     }
   }
 
+  // Mostrar cantidad formateada
+  const displayQuantity = productQuantity
+    ? `${productQuantity} ${quantityUnit === 'unidades' ? 'ud(s)' : 'lb(s)'}`
+    : '0'
+
   return (
-    <div className='bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
-      <form onSubmit={addProducts} className='space-y-4'>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <div>
-            <label className='block text-sm font-medium text-gray-700 mb-2'>
-              Nombre del producto
-            </label>
+    <div className='bg-white rounded-2xl shadow-xl border border-jacarta-100 overflow-hidden'>
+      {/* Header del formulario */}
+      <div className='bg-gradient-to-r from-jacarta-500 to-jacarta-600 px-6 py-4'>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center gap-3'>
+            <div className='w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center'>
+              <IconPlus className='w-5 h-5 text-white' />
+            </div>
+            <div>
+              <h3 className='text-white font-bold text-lg'>Nuevo Producto</h3>
+              <p className='text-jacarta-100 text-sm'>Agrega un artículo a tu lista</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className='w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors'
+          >
+            <IconClose className='w-5 h-5 text-white' />
+          </button>
+        </div>
+      </div>
+
+      {/* Formulario */}
+      <form onSubmit={addProducts} className='p-6 space-y-5'>
+        {/* Nombre del producto */}
+        <div className='relative'>
+          <label className='block text-sm font-semibold text-gray-700 mb-2'>
+            Nombre del producto
+          </label>
+          <div className='relative'>
             <Input
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               type='text'
-              placeholder='Ej: Manzanas rojas'
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.name ? 'border-red-500' : 'border-gray-300'
-              }`}
+              placeholder='Ej: Manzana roja orgánica'
+              className={`w-full px-4 py-3.5 pl-11 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${errors.name ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                }`}
             />
-            {errors.name && <p className='text-red-500 text-sm mt-1'>{errors.name}</p>}
+            <div className='absolute left-4 top-1/2 -translate-y-1/2 text-jacarta-400'>
+              <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' />
+              </svg>
+            </div>
           </div>
+          {errors.name && (
+            <p className='text-danger-600 text-sm mt-1.5 flex items-center gap-1'>
+              <svg className='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'>
+                <path fillRule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z' clipRule='evenodd' />
+              </svg>
+              {errors.name}
+            </p>
+          )}
+        </div>
 
-          <div>
-            <label className='block text-sm font-medium text-gray-700 mb-2'>
-              Categoría
-            </label>
+        {/* Categoría */}
+        <div>
+          <label className='block text-sm font-semibold text-gray-700 mb-2'>
+            Categoría
+          </label>
+          <div className='relative'>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.category ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3.5 border-2 rounded-xl appearance-none cursor-pointer focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base bg-white ${errors.category ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                }`}
             >
-              <option value=''>Selecciona la categoría</option>
+              <option value=''>Selecciona una categoría...</option>
               {categories.map((cat) => (
-                <option key={cat.id} value={cat.value}>{cat.value}</option>
+                <option key={cat.id} value={cat.value} className='py-2'>
+                  {cat.icon} {cat.value}
+                </option>
               ))}
             </select>
-            {errors.category && <p className='text-red-500 text-sm mt-1'>{errors.category}</p>}
+            <div className='absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-jacarta-400'>
+              <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M19 9l-7 7-7-7' />
+              </svg>
+            </div>
           </div>
+          {errors.category && (
+            <p className='text-danger-600 text-sm mt-1.5 flex items-center gap-1'>
+              <svg className='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'>
+                <path fillRule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z' clipRule='evenodd' />
+              </svg>
+              {errors.category}
+            </p>
+          )}
+        </div>
 
+        {/* Cantidad (con toggle unidades/libras) y Precio */}
+        <div className='grid grid-cols-2 gap-4'>
           <div>
-            <label className='block text-sm font-medium text-gray-700 mb-2'>
+            <label className='block text-sm font-semibold text-gray-700 mb-2'>
               Cantidad
             </label>
-            <Input
-              value={productQuantity}
-              onChange={(e) => setProductQuantity(e.target.value)}
-              type='number'
-              min='1'
-              placeholder='1'
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.quantity ? 'border-red-500' : 'border-gray-300'
-              }`}
-            />
-            {errors.quantity && <p className='text-red-500 text-sm mt-1'>{errors.quantity}</p>}
+
+            {/* Toggle unidades/libras */}
+            <div className='flex mb-2 bg-gray-100 rounded-lg p-1'>
+              <button
+                type='button'
+                onClick={() => setQuantityUnit('unidades')}
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all ${quantityUnit === 'unidades'
+                    ? 'bg-white text-jacarta-700 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-700'
+                  }`}
+              >
+                Unidades
+              </button>
+              <button
+                type='button'
+                onClick={() => setQuantityUnit('libras')}
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all ${quantityUnit === 'libras'
+                    ? 'bg-white text-jacarta-700 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-700'
+                  }`}
+              >
+                Libras
+              </button>
+            </div>
+
+            <div className='relative'>
+              <Input
+                value={productQuantity}
+                onChange={(e) => setProductQuantity(e.target.value)}
+                type='number'
+                step='0.01'
+                min='0.01'
+                placeholder='1'
+                className={`w-full px-4 py-3.5 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${errors.quantity ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                  }`}
+              />
+              <div className='absolute right-4 top-1/2 -translate-y-1/2 text-jacarta-400 text-sm font-medium'>
+                {quantityUnit === 'unidades' ? 'ud(s)' : 'lb(s)'}
+              </div>
+            </div>
+            {errors.quantity && (
+              <p className='text-danger-600 text-sm mt-1.5'>{errors.quantity}</p>
+            )}
           </div>
 
           <div>
-            <label className='block text-sm font-medium text-gray-700 mb-2'>
-              Precio ($)
+            <label className='block text-sm font-semibold text-gray-700 mb-2'>
+              Precio
             </label>
-            <Input
-              value={productPrice}
-              onChange={(e) => setProductPrice(e.target.value)}
-              type='number'
-              step='0.01'
-              min='0.01'
-              placeholder='0.00'
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
-                errors.price ? 'border-red-500' : 'border-gray-300'
-              }`}
-            />
-            {errors.price && <p className='text-red-500 text-sm mt-1'>{errors.price}</p>}
+            <div className='relative'>
+              <div className='absolute left-4 top-1/2 -translate-y-1/2 text-jacarta-400 font-medium'>
+                $
+              </div>
+              <Input
+                value={productPrice}
+                onChange={(e) => setProductPrice(e.target.value)}
+                type='number'
+                step='0.01'
+                min='0.01'
+                placeholder='0.00'
+                className={`w-full px-4 py-3.5 pl-8 border-2 rounded-xl focus:ring-2 focus:ring-jacarta-200 focus:border-jacarta-500 transition-all text-base ${errors.price ? 'border-danger-500 bg-danger-50' : 'border-jacarta-200 hover:border-jacarta-300'
+                  }`}
+              />
+            </div>
+            {errors.price && (
+              <p className='text-danger-600 text-sm mt-1.5'>{errors.price}</p>
+            )}
           </div>
         </div>
 
-        <div className='flex flex-col sm:flex-row gap-3 pt-4'>
+        {/* Preview */}
+        {(productName || productPrice) && (
+          <div className='bg-jacarta-50 rounded-xl p-4 border border-jacarta-200'>
+            <p className='text-xs font-medium text-jacarta-600 mb-2 uppercase tracking-wide'>Vista previa</p>
+            <div className='flex items-center justify-between'>
+              <div>
+                <p className='font-semibold text-gray-800'>{productName || 'Sin nombre'}</p>
+                <p className='text-sm text-gray-500'>
+                  {displayQuantity} x ${productPrice || '0.00'}
+                </p>
+              </div>
+              <div className='text-right'>
+                <p className='text-xl font-bold text-jacarta-600'>
+                  ${((parseFloat(productQuantity) || 0) * (parseFloat(productPrice) || 0)).toFixed(2)}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Botones */}
+        <div className='flex flex-col sm:flex-row gap-3 pt-2'>
           <button
             type='submit'
-            className='flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-102 shadow-lg'
+            className='flex-1 bg-gradient-to-r from-jacarta-500 to-jacarta-600 text-white py-3.5 px-6 rounded-xl font-semibold hover:from-jacarta-600 hover:to-jacarta-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-jacarta-500/25 flex items-center justify-center gap-2'
           >
-            ✓ Agregar producto
+            <IconCheck className='w-5 h-5' />
+            <span>Agregar</span>
           </button>
+
+          <button
+            type='button'
+            onClick={() => setShowOCR(true)}
+            className='flex-1 sm:flex-none bg-gradient-to-r from-warm-500 to-warm-600 text-white py-3.5 px-4 rounded-xl font-semibold hover:from-warm-600 hover:to-warm-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md'
+          >
+            <IconScan className='w-5 h-5' />
+            <span className='text-sm'>Escanear</span>
+          </button>
+
           <button
             type='button'
             onClick={onClose}
-            className='flex-1 sm:flex-none bg-gray-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-600 transition-all duration-300'
+            className='flex-1 sm:flex-none bg-gray-100 text-gray-600 py-3.5 px-4 rounded-xl font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2'
           >
-            Cancelar
+            <IconClose className='w-5 h-5' />
+            <span className='text-sm'>Cancelar</span>
           </button>
         </div>
       </form>
+
+      {showOCR && (
+        <OCRScanner
+          onScanComplete={handleOCRScanComplete}
+          onClose={() => setShowOCR(false)}
+        />
+      )}
     </div>
   )
 }

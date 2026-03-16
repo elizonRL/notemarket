@@ -122,7 +122,7 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
               
               <button
                 onClick={startCamera}
-                className="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 bg-gradient-to-r from-jacarta-500 to-jacarta-600 text-white rounded-xl font-medium hover:from-jacarta-600 hover:to-jacarta-700 transition-all flex items-center justify-center gap-2"
               >
                 <IconCamera className="w-5 h-5" />
                 Usar Camara
@@ -131,7 +131,7 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
               <div className="relative">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full py-3 bg-gradient-to-r from-violet-500 to-purple-600 text-white rounded-xl font-medium hover:from-violet-600 hover:to-purple-700 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gradient-to-r from-warm-500 to-warm-600 text-white rounded-xl font-medium hover:from-warm-600 hover:to-warm-700 transition-all flex items-center justify-center gap-2"
                 >
                   <IconImage className="w-5 h-5" />
                   Seleccionar de Galeria
@@ -158,7 +158,7 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
               <div className="flex gap-3">
                 <button
                   onClick={capturePhoto}
-                  className="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-medium flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-jacarta-600 text-white rounded-xl font-medium flex items-center justify-center gap-2"
                 >
                   <IconCamera className="w-5 h-5" />
                   Capturar
@@ -195,7 +195,7 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
                 <div className="flex gap-3">
                   <button
                     onClick={handleScan}
-                    className="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 flex items-center justify-center gap-2"
+                    className="flex-1 py-3 bg-jacarta-600 text-white rounded-xl font-medium hover:bg-jacarta-700 flex items-center justify-center gap-2"
                   >
                     <IconSearch className="w-5 h-5" />
                     Escanear Texto
@@ -213,8 +213,8 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
 
           {scannedData && (
             <div className="space-y-4">
-              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-                <h4 className="font-bold text-emerald-800 mb-3 flex items-center gap-2">
+              <div className="bg-jacarta-50 border border-jacarta-200 rounded-xl p-4">
+                <h4 className="font-bold text-jacarta-800 mb-3 flex items-center gap-2">
                   <IconCheck className="w-5 h-5" />
                   Datos Extraidos
                 </h4>
@@ -240,7 +240,7 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
               <div className="flex gap-3">
                 <button
                   onClick={handleConfirm}
-                  className="flex-1 py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-jacarta-600 text-white rounded-xl font-medium hover:bg-jacarta-700 flex items-center justify-center gap-2"
                 >
                   <IconCheck className="w-5 h-5" />
                   Confirmar

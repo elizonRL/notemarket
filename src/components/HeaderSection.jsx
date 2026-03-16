@@ -1,6 +1,6 @@
 const Header = () => {
   return (
-    <header className='bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 text-white shadow-xl'>
+    <header className='bg-gradient-to-r from-jacarta-600 via-jacarta-500 to-jacarta-700 text-white shadow-xl'>
       <div className='container mx-auto px-4 py-6'>
         <div className='flex items-center justify-center'>
           <div className='flex items-center gap-4'>
@@ -13,9 +13,9 @@ const Header = () => {
             </div>
             <div className='text-center sm:text-left'>
               <h1 className='font-bold text-3xl sm:text-4xl lg:text-5xl tracking-tight'>
-                note<span className='text-emerald-200'>Market</span>
+                note<span className='text-jacarta-200'>Market</span>
               </h1>
-              <p className='text-emerald-100 text-sm sm:text-base font-light mt-1'>
+              <p className='text-jacarta-100 text-sm sm:text-base font-light mt-1'>
                 Tu asistente de compras inteligente
               </p>
             </div>

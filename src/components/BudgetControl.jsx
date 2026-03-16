@@ -12,9 +12,9 @@ const BudgetControl = ({ totalSpent }) => {
   const remaining = budget - totalSpent
 
   const getStatusColor = () => {
-    if (percentage >= 100) return 'text-red-600'
-    if (percentage >= 80) return 'text-yellow-600'
-    return 'text-green-600'
+    if (percentage >= 100) return 'text-danger-600'
+    if (percentage >= 80) return 'text-warning-600'
+    return 'text-success-600'
   }
 
   const cancelPresupuesto = () => {
@@ -24,15 +24,15 @@ const BudgetControl = ({ totalSpent }) => {
 
   return (
     <article className='bg-white rounded-2xl shadow-xl p-6 border border-gray-100 overflow-hidden relative'>
-      <div className='absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-emerald-500 to-teal-500'></div>
+      <div className='absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-jacarta-500 to-jacarta-600'></div>
       <section className='flex justify-between items-center mb-4'>
         <h3 className='text-xl font-bold text-gray-800 flex items-center gap-2'>
-          <IconMoney className="w-5 h-5 text-emerald-600" />
+          <IconMoney className="w-5 h-5 text-jacarta-600" />
           Presupuesto
         </h3>
         <button
           onClick={() => setShowBudgetForm(!showBudgetForm)}
-          className='text-emerald-600 hover:text-emerald-800 font-semibold text-sm px-3 py-1 rounded-full hover:bg-emerald-50 transition-colors'
+          className='text-jacarta-600 hover:text-jacarta-800 font-semibold text-sm px-3 py-1 rounded-full hover:bg-jacarta-50 transition-colors'
         >
           {budget > 0 ? 'Editar' : 'Establecer'}
         </button>

@@ -3,18 +3,21 @@ import { IconCart } from './Icons'
 import { getCategoryIcon, getCategoryColor } from './Icons/categories'
 
 const ExpenseChart = ({ products }) => {
-  if (products.length === 0) return null
-
+  // Los hooks SIEMPRE se llaman primero, antes de cualquier return condicional
   // Calcular gasto por producto
-  const productExpenses = useMemo(() => products.map(product => ({
-    name: product.name,
-    category: product.category,
-    total: product.quantity * product.price,
-    quantity: product.quantity
-  })), [products])
+  const productExpenses = useMemo(() => {
+    if (!products || products.length === 0) return []
+    return products.map(product => ({
+      name: product.name,
+      category: product.category,
+      total: product.quantity * product.price,
+      quantity: product.quantity
+    }))
+  }, [products])
 
   // Calcular gasto por categoría
   const categoryExpenses = useMemo(() => {
+    if (!products || products.length === 0) return []
     const categories = {}
     products.forEach(product => {
       const total = product.quantity * product.price
@@ -34,6 +37,9 @@ const ExpenseChart = ({ products }) => {
       .sort((a, b) => b.total - a.total)
   }, [products])
 
+  // Early return DESPUÉS de los hooks
+  if (productExpenses.length === 0) return null
+
   const totalExpense = productExpenses.reduce((sum, item) => sum + item.total, 0)
   
   categoryExpenses.forEach(item => {
@@ -43,14 +49,14 @@ const ExpenseChart = ({ products }) => {
   return (
     <div className='bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100'>
       <h3 className='text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 text-center flex items-center justify-center gap-2'>
-        <IconCart className="w-5 h-5 text-emerald-600" />
+        <IconCart className="w-5 h-5 text-jacarta-600" />
         Resumen de Compras
       </h3>
 
       {/* Gasto total destacado */}
-      <div className='bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 sm:p-6 text-white mb-6 shadow-lg'>
+      <div className='bg-gradient-to-r from-jacarta-500 to-jacarta-600 rounded-2xl p-4 sm:p-6 text-white mb-6 shadow-lg'>
         <div className='text-center'>
-          <p className='text-emerald-100 text-sm font-medium mb-1'>Total gastado</p>
+          <p className='text-jacarta-100 text-sm font-medium mb-1'>Total gastado</p>
           <p className='text-3xl sm:text-4xl font-bold'>${totalExpense.toFixed(2)}</p>
           <div className='mt-3 flex justify-center gap-4 text-sm'>
             <span className='bg-white/20 px-3 py-1 rounded-full'>
@@ -138,7 +144,7 @@ const ExpenseChart = ({ products }) => {
       <div className='mt-4 pt-4 border-t border-gray-200 grid grid-cols-2 gap-4'>
         <div className='text-center p-3 bg-gray-50 rounded-xl'>
           <p className='text-gray-500 text-xs uppercase'>Promedio por producto</p>
-          <p className='font-bold text-emerald-600'>
+          <p className='font-bold text-jacarta-600'>
             ${(totalExpense / products.length).toFixed(2)}
           </p>
         </div>

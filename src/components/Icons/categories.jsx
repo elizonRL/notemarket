@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 // Iconos para categorías de supermercado
 
 export const IconCategoryFruits = ({ className = "w-5 h-5" }) => (

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useOCR } from '@/hooks/useOCR'
 import { IconCamera, IconImage, IconSearch, IconClose, IconCheck } from './Icons'
 
@@ -6,25 +6,50 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
   const [imagePreview, setImagePreview] = useState(null)
   const [scannedData, setScannedData] = useState(null)
   const [cameraMode, setCameraMode] = useState(false)
+  const [cameraError, setCameraError] = useState(null)
+  const [scanError, setScanError] = useState(null)
+  const [isVideoReady, setIsVideoReady] = useState(false)
   const videoRef = useRef(null)
   const streamRef = useRef(null)
   const fileInputRef = useRef(null)
 
   const { processImage, isProcessing, progress, error } = useOCR()
 
+  // Cleanup camera on unmount
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
+      }
+    }
+  }, [])
+
   const startCamera = async () => {
     try {
+      setCameraError(null)
+      setIsVideoReady(false)
+
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }
+        video: {
+          facingMode: 'environment',
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
       })
       streamRef.current = stream
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream
+        // Esperar a que el video esté listo
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current.play()
+          setIsVideoReady(true)
+        }
       }
       setCameraMode(true)
     } catch (err) {
       console.error('Error accessing camera:', err)
-      alert('No se pudo acceder a la cámara. Por favor verifica los permisos.')
+      setCameraError('No se pudo acceder a la cámara. Verifica los permisos o asegura que usas HTTPS.')
     }
   }
 
@@ -34,6 +59,8 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
       streamRef.current = null
     }
     setCameraMode(false)
+    setIsVideoReady(false)
+    setCameraError(null)
   }
 
   const capturePhoto = () => {
@@ -65,12 +92,13 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
   const handleScan = async () => {
     if (!imagePreview) return
 
+    setScanError(null)
     const result = await processImage(imagePreview)
 
     if (result.success) {
       setScannedData(result)
     } else {
-      alert('Error al procesar la imagen: ' + result.error)
+      setScanError('Error al procesar la imagen: ' + result.error)
     }
   }
 
@@ -88,6 +116,7 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
   const handleReset = () => {
     setImagePreview(null)
     setScannedData(null)
+    setScanError(null)
     stopCamera()
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
@@ -149,23 +178,44 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
 
           {cameraMode && (
             <div className='space-y-3'>
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                className='w-full rounded-lg bg-black'
-              />
+              {/* Video o estado de carga/error */}
+              <div className='relative w-full rounded-lg overflow-hidden bg-black min-h-[240px] flex items-center justify-center'>
+                {!isVideoReady && !cameraError && (
+                  <div className='text-white text-center p-4'>
+                    <div className='animate-pulse mb-2'>📷</div>
+                    <p>Iniciando cámara...</p>
+                  </div>
+                )}
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  className={`w-full rounded-lg bg-black ${!isVideoReady ? 'hidden' : ''}`}
+                />
+                {cameraError && (
+                  <div className='text-red-400 text-center p-4'>
+                    <p className='text-lg mb-2'>⚠️</p>
+                    <p>{cameraError}</p>
+                  </div>
+                )}
+              </div>
+
               <div className='flex gap-3'>
                 <button
                   onClick={capturePhoto}
-                  className='flex-1 py-3 bg-jacarta-600 text-white rounded-xl font-medium flex items-center justify-center gap-2'
+                  disabled={!isVideoReady}
+                  className={`flex-1 py-3 rounded-xl font-medium flex items-center justify-center gap-2 ${
+                    isVideoReady
+                      ? 'bg-jacarta-600 text-white hover:bg-jacarta-700'
+                      : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                  }`}
                 >
                   <IconCamera className='w-5 h-5' />
                   Capturar
                 </button>
                 <button
                   onClick={stopCamera}
-                  className='flex-1 py-3 bg-gray-400 text-white rounded-xl font-medium'
+                  className='flex-1 py-3 bg-gray-400 text-white rounded-xl font-medium hover:bg-gray-500'
                 >
                   Cancelar
                 </button>
@@ -180,6 +230,12 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
                 alt='Preview'
                 className='w-full rounded-lg border-2 border-gray-200'
               />
+
+              {scanError && (
+                <div className='bg-red-50 border border-red-200 rounded-lg p-3'>
+                  <p className='text-red-700 text-sm'>{scanError}</p>
+                </div>
+              )}
 
               {isProcessing ? (
                 <div className='text-center py-4'>

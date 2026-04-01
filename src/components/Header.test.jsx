@@ -11,8 +11,11 @@ describe('test Header component', () => {
 
   test('div icon', () => {
     render(<Header />)
-    // El header renderiza correctamente
-    expect(screen.getByText('noteMarket')).toBeDefined()
+    // El header renderiza correctamente - busca 'note' seguido de 'Market'
+    const noteText = screen.getByText('note')
+    expect(noteText).toBeDefined()
+    const marketText = screen.getByText('Market')
+    expect(marketText).toBeDefined()
   })
 
   test('Paraghaf on header', () => {

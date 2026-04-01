@@ -1,6 +1,17 @@
 import { forwardRef } from 'react'
 
-export const Input = forwardRef(({ type = 'text', placeholder, value, onChange, defaulvalue, className, ...res }, ref) => {
+/**
+ * Input component - Wrapper around native input with forwardRef support
+ */
+export const Input = forwardRef(({
+  type = 'text',
+  placeholder,
+  value,
+  onChange,
+  defaultValue,
+  className,
+  ...props
+}, ref) => {
   return (
     <input
       ref={ref}
@@ -8,9 +19,11 @@ export const Input = forwardRef(({ type = 'text', placeholder, value, onChange, 
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      defaultValue={defaulvalue}
+      defaultValue={defaultValue}
       className={className}
-      {...res}
+      {...props}
     />
   )
 })
+
+Input.displayName = 'Input'

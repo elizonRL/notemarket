@@ -1,6 +1,33 @@
 /* eslint-disable react-refresh/only-export-components */
 // Iconos para categorías de supermercado
 
+// ============================================
+// CONSTANTES DE CATEGORÍAS (exportadas para uso en FormSection)
+// ============================================
+export const CATEGORIES = [
+  { id: 1, value: 'Frutas y Verduras', icon: '🥬' },
+  { id: 2, value: 'Lácteos', icon: '🥛' },
+  { id: 3, value: 'Panadería', icon: '🥖' },
+  { id: 4, value: 'Carnes', icon: '🥩' },
+  { id: 5, value: 'Pescados y Mariscos', icon: '🐟' },
+  { id: 6, value: 'Fiambres y Embutidos', icon: '🍖' },
+  { id: 7, value: 'Bebidas', icon: '🥤' },
+  { id: 8, value: 'Congelados', icon: '🧊' },
+  { id: 9, value: 'Enlatados', icon: '🥫' },
+  { id: 10, value: 'Arroz, Pasta y Cereales', icon: '🍝' },
+  { id: 11, value: 'Aceites y Aderezos', icon: '🫒' },
+  { id: 12, value: 'Condimentos y Especias', icon: '🧂' },
+  { id: 13, value: 'Café, Té y Chocolate', icon: '☕' },
+  { id: 14, value: 'Galletitas y Dulces', icon: '🍪' },
+  { id: 15, value: 'Limpieza', icon: '🧹' },
+  { id: 16, value: 'Higiene Personal', icon: '🧴' },
+  { id: 17, value: 'Perfumería', icon: '🌸' },
+  { id: 18, value: 'Otros', icon: '📦' }
+]
+
+// ============================================
+// ICONOS DE CATEGORÍAS
+// ============================================
 export const IconCategoryFruits = ({ className = "w-5 h-5" }) => (
   <svg xmlns='http://www.w3.org/2000/svg' className={className} viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
     <circle cx='12' cy='14' r='8'/>

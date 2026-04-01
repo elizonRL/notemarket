@@ -2,9 +2,12 @@ import { useMemo } from 'react'
 import { IconCart } from './Icons'
 import { getCategoryIcon, getCategoryColor } from './Icons/categories'
 
+/**
+ * ExpenseChart - Componente para mostrar resumen de gastos
+ * Refactorizado: cálculos memoizados y uso correcto de categorías
+ */
 const ExpenseChart = ({ products }) => {
-  // Los hooks SIEMPRE se llaman primero, antes de cualquier return condicional
-  // Calcular gasto por producto
+  // Memoizar gasto por producto
   const productExpenses = useMemo(() => {
     if (!products || products.length === 0) return []
     return products.map(product => ({
@@ -15,36 +18,59 @@ const ExpenseChart = ({ products }) => {
     }))
   }, [products])
 
-  // Calcular gasto por categoría
+  // Memoizar gasto por categoría con porcentajes
   const categoryExpenses = useMemo(() => {
     if (!products || products.length === 0) return []
-    const categories = {}
+
+    const categoryMap = {}
+    let totalExpense = 0
+
+    // Agrupar por categoría y calcular totales
     products.forEach(product => {
-      const total = product.quantity * product.price
-      if (!categories[product.category]) {
-        categories[product.category] = { total: 0, count: 0 }
+      const itemTotal = product.quantity * product.price
+      totalExpense += itemTotal
+
+      if (!categoryMap[product.category]) {
+        categoryMap[product.category] = { total: 0, count: 0 }
       }
-      categories[product.category].total += total
-      categories[product.category].count += 1
+      categoryMap[product.category].total += itemTotal
+      categoryMap[product.category].count += 1
     })
-    return Object.entries(categories)
+
+    // Convertir a array con porcentajes calculados
+    return Object.entries(categoryMap)
       .map(([category, data]) => ({
         category,
         total: data.total,
         count: data.count,
-        percentage: 0
+        percentage: totalExpense > 0 ? (data.total / totalExpense) * 100 : 0
       }))
       .sort((a, b) => b.total - a.total)
   }, [products])
 
-  // Early return DESPUÉS de los hooks
+  // Memoizar gasto total
+  const totalExpense = useMemo(
+    () => productExpenses.reduce((sum, item) => sum + item.total, 0),
+    [productExpenses]
+  )
+
+  // Memoizar productos ordenados
+  const sortedProducts = useMemo(
+    () => [...productExpenses].sort((a, b) => b.total - a.total),
+    [productExpenses]
+  )
+
+  // Memoizar promedio por producto
+  const averagePerProduct = useMemo(
+    () => {
+      const productCount = products?.length || 0
+      return productCount > 0 ? totalExpense / productCount : 0
+    },
+    [totalExpense, products]
+  )
+
+  // Early return si no hay productos
   if (productExpenses.length === 0) return null
-
-  const totalExpense = productExpenses.reduce((sum, item) => sum + item.total, 0)
-
-  categoryExpenses.forEach(item => {
-    item.percentage = (item.total / totalExpense) * 100
-  })
 
   return (
     <div className='bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-gray-100'>
@@ -75,11 +101,11 @@ const ExpenseChart = ({ products }) => {
           Gasto por categoría
         </h4>
 
-        {categoryExpenses.map((item, index) => {
+        {categoryExpenses.map((item) => {
           const colors = getCategoryColor(item.category)
           const CategoryIcon = getCategoryIcon(item.category)
           return (
-            <div key={index} className='space-y-1'>
+            <div key={item.category} className='space-y-1'>
               <div className='flex justify-between items-center text-sm'>
                 <span className='font-medium text-gray-700 flex items-center gap-2'>
                   <span className={`p-1 rounded-lg ${colors.light}`}>
@@ -112,31 +138,29 @@ const ExpenseChart = ({ products }) => {
         </h4>
 
         <div className='space-y-2 max-h-64 overflow-y-auto'>
-          {productExpenses
-            .sort((a, b) => b.total - a.total)
-            .map((item, index) => {
-              const colors = getCategoryColor(item.category)
-              const CategoryIcon = getCategoryIcon(item.category)
-              return (
-                <div
-                  key={index}
-                  className='flex justify-between items-center p-2 rounded-lg hover:bg-gray-50 transition-colors'
-                >
-                  <div className='flex items-center gap-2 flex-1 min-w-0'>
-                    <CategoryIcon className={`w-4 h-4 ${colors.text} flex-shrink-0`} />
-                    <span className='font-medium text-gray-700 text-sm truncate'>
-                      {item.name}
-                    </span>
-                    <span className='text-gray-400 text-xs flex-shrink-0'>
-                      x{item.quantity}
-                    </span>
-                  </div>
-                  <span className='font-bold text-gray-800 text-sm ml-2'>
-                    ${item.total.toFixed(2)}
+          {sortedProducts.map((item) => {
+            const colors = getCategoryColor(item.category)
+            const CategoryIcon = getCategoryIcon(item.category)
+            return (
+              <div
+                key={item.name}
+                className='flex justify-between items-center p-2 rounded-lg hover:bg-gray-50 transition-colors'
+              >
+                <div className='flex items-center gap-2 flex-1 min-w-0'>
+                  <CategoryIcon className={`w-4 h-4 ${colors.text} flex-shrink-0`} />
+                  <span className='font-medium text-gray-700 text-sm truncate'>
+                    {item.name}
+                  </span>
+                  <span className='text-gray-400 text-xs flex-shrink-0'>
+                    x{item.quantity}
                   </span>
                 </div>
-              )
-            })}
+                <span className='font-bold text-gray-800 text-sm ml-2'>
+                  ${item.total.toFixed(2)}
+                </span>
+              </div>
+            )
+          })}
         </div>
       </div>
 
@@ -145,7 +169,7 @@ const ExpenseChart = ({ products }) => {
         <div className='text-center p-3 bg-gray-50 rounded-xl'>
           <p className='text-gray-500 text-xs uppercase'>Promedio por producto</p>
           <p className='font-bold text-jacarta-600'>
-            ${(totalExpense / products.length).toFixed(2)}
+            ${averagePerProduct.toFixed(2)}
           </p>
         </div>
         <div className='text-center p-3 bg-gray-50 rounded-xl'>

@@ -1,48 +1,49 @@
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { IconTrash } from './Icons'
 import ConfirmModal from './ConfirmModal'
+import { QuantityEditor } from './QuantityEditor'
 
+/**
+ * Table - Componente para mostrar lista de productos
+ * Refactorizado: usa QuantityEditor para eliminar duplicación
+ */
 const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
-  const total = products.reduce(
-    (acc, item) => acc + item.quantity * item.price,
-    0
+  const [editingIndex, setEditingIndex] = useState(null)
+  const [productToDelete, setProductToDelete] = useState(null)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+  // Memoizar el cálculo del total para evitar recálculos innecesarios
+  const total = useMemo(
+    () => products.reduce((acc, item) => acc + item.quantity * item.price, 0),
+    [products]
   )
 
-  const [editingIndex, setEditingIndex] = useState(null)
-  const [editValue, setEditValue] = useState('')
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [productToDelete, setProductToDelete] = useState(null)
-
-  const startEdit = (index, currentQty) => {
+  const startEdit = useCallback((index) => {
     setEditingIndex(index)
-    setEditValue(currentQty.toString())
-  }
+  }, [])
 
-  const saveEdit = (index) => {
-    const newQty = parseFloat(editValue)
-    if (newQty > 0) {
-      onUpdateProduct(index, { ...products[index], quantity: newQty })
-    }
+  const saveEdit = useCallback((index, newQuantity) => {
+    onUpdateProduct(index, { ...products[index], quantity: newQuantity })
     setEditingIndex(null)
-  }
+  }, [products, onUpdateProduct])
 
-  const handleDeleteClick = (index) => {
+  const handleDeleteClick = useCallback((index) => {
     setProductToDelete(index)
     setShowDeleteModal(true)
-  }
+  }, [])
 
-  const confirmDelete = () => {
+  const confirmDelete = useCallback(() => {
     if (productToDelete !== null) {
       onDeleteProduct(productToDelete)
     }
     setShowDeleteModal(false)
     setProductToDelete(null)
-  }
+  }, [productToDelete, onDeleteProduct])
 
-  const cancelDelete = () => {
+  const cancelDelete = useCallback(() => {
     setShowDeleteModal(false)
     setProductToDelete(null)
-  }
+  }, [])
 
   return (
     <div className='bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100'>
@@ -71,29 +72,21 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
               <div className='text-center'>
                 {editingIndex === i
                   ? (
-                    <input
-                      type='number'
-                      step='0.01'
-                      min='0.01'
-                      value={editValue}
-                      onChange={(e) => setEditValue(e.target.value)}
-                      onBlur={() => saveEdit(i)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') saveEdit(i)
-                      }}
-                      className='w-20 px-2 py-1 text-center border-2 border-jacarta-500 rounded-lg text-jacarta-600 font-semibold'
-                      autoFocus
+                    <QuantityEditor
+                      value={item.quantity}
+                      onSave={(newQty) => saveEdit(i, newQty)}
+                      size='md'
                     />
-                    )
+                  )
                   : (
                     <button
-                      onClick={() => startEdit(i, item.quantity)}
+                      onClick={() => startEdit(i)}
                       className='text-jacarta-600 font-semibold hover:text-jacarta-800 cursor-pointer px-2 py-1 rounded hover:bg-jacarta-50'
                       title='Click para editar'
                     >
                       {item.quantityDisplay || `${item.quantity} ud(s)`}
                     </button>
-                    )}
+                  )}
               </div>
               <div className='text-center text-jacarta-600 font-semibold'>${item.price.toFixed(2)}</div>
               <div className='text-center font-bold text-gray-900'>${(item.quantity * item.price).toFixed(2)}</div>
@@ -129,29 +122,21 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
                   <span className='text-gray-500'>Cant:</span>
                   {editingIndex === i
                     ? (
-                      <input
-                        type='number'
-                        step='0.01'
-                        min='0.01'
-                        value={editValue}
-                        onChange={(e) => setEditValue(e.target.value)}
-                        onBlur={() => saveEdit(i)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') saveEdit(i)
-                        }}
-                        className='w-16 px-2 py-1 text-center border-2 border-jacarta-500 rounded-lg text-jacarta-600 font-semibold text-sm'
-                        autoFocus
+                      <QuantityEditor
+                        value={item.quantity}
+                        onSave={(newQty) => saveEdit(i, newQty)}
+                        size='sm'
                       />
-                      )
+                    )
                     : (
                       <button
-                        onClick={() => startEdit(i, item.quantity)}
+                        onClick={() => startEdit(i)}
                         className='font-semibold text-jacarta-700 hover:text-jacarta-900 cursor-pointer'
                         title='Click para editar'
                       >
                         {item.quantityDisplay || `${item.quantity} ud(s)`}
                       </button>
-                      )}
+                    )}
                 </div>
                 <span className='text-gray-500'>${item.price.toFixed(2)} c/u</span>
               </div>
@@ -167,9 +152,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
           <span className='text-2xl font-bold text-jacarta-600'>${total.toFixed(2)}</span>
         </div>
         <div className='text-sm text-gray-500 mt-1'>
-          {products.length} producto{products.length !== 1
-            ? 's'
-            : ''} en total
+          {products.length} producto{products.length !== 1 ? 's' : ''} en total
         </div>
       </div>
 
@@ -182,9 +165,10 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
         cancelText='Cancelar'
         variant='danger'
         onConfirm={confirmDelete}
-        onCancel={cancelDelete}
+        onClose={cancelDelete}
       />
     </div>
   )
 }
+
 export default Table

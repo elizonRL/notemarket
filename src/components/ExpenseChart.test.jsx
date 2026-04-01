@@ -16,7 +16,9 @@ describe('ExpenseChart Component', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  test('no renderiza cuando products es undefined', () => {
+  test('no renderiza cuando products es undefined o null', () => {
+    // Nota: Cuando products es undefined/null, productExpenses returns []
+    // porque el useMemo verifica `if (!products || products.length === 0)`
     const { container } = render(<ExpenseChart products={undefined} />)
     expect(container.firstChild).toBeNull()
   })

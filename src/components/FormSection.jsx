@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { Input } from './Input'
 import OCRScanner from './OCRScanner'
 import { IconCheck, IconScan, IconClose, IconPlus } from './Icons'
+import { CATEGORIES } from './Icons/categories'
 
 const FormSection = ({ handleAddProduct, onClose }) => {
   const [showOCR, setShowOCR] = useState(false)
@@ -25,27 +26,6 @@ const FormSection = ({ handleAddProduct, onClose }) => {
     const qty = parseFloat(productQuantity) || 0
     return qty // Se guarda tal cual: libras = libras, unidades = unidades
   }, [productQuantity])
-
-  const categories = [
-    { id: 1, value: 'Frutas y Verduras', icon: '🥬' },
-    { id: 2, value: 'Lácteos', icon: '🥛' },
-    { id: 3, value: 'Panadería', icon: '🥖' },
-    { id: 4, value: 'Carnes', icon: '🥩' },
-    { id: 5, value: 'Pescados y Mariscos', icon: '🐟' },
-    { id: 6, value: 'Fiambres y Embutidos', icon: '🍖' },
-    { id: 7, value: 'Bebidas', icon: '🥤' },
-    { id: 8, value: 'Congelados', icon: '🧊' },
-    { id: 9, value: 'Enlatados', icon: '🥫' },
-    { id: 10, value: 'Arroz, Pasta y Cereales', icon: '🍝' },
-    { id: 11, value: 'Aceites y Aderezos', icon: '🫒' },
-    { id: 12, value: 'Condimentos y Especias', icon: '🧂' },
-    { id: 13, value: 'Café, Té y Chocolate', icon: '☕' },
-    { id: 14, value: 'Galletitas y Dulces', icon: '🍪' },
-    { id: 15, value: 'Limpieza', icon: '🧹' },
-    { id: 16, value: 'Higiene Personal', icon: '🧴' },
-    { id: 17, value: 'Perfumería', icon: '🌸' },
-    { id: 18, value: 'Otros', icon: '📦' }
-  ]
 
   const validateForm = () => {
     const newErrors = {}
@@ -152,7 +132,7 @@ const FormSection = ({ handleAddProduct, onClose }) => {
                 }`}
             >
               <option value=''>Selecciona una categoría...</option>
-              {categories.map((cat) => (
+              {CATEGORIES.map((cat) => (
                 <option key={cat.id} value={cat.value} className='py-2'>
                   {cat.icon} {cat.value}
                 </option>

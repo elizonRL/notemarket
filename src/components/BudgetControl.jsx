@@ -1,25 +1,70 @@
-import { useState, useRef } from 'react'
+import { useState, useMemo } from 'react'
 import { Input } from './Input'
 import LinearProgress from '@mui/material/LinearProgress'
 import { IconMoney, IconAlert, IconWarning } from './Icons'
 
+// ============================================
+// CONSTANTES
+// ============================================
+const BUDGET_THRESHOLDS = {
+  WARNING: 80,  // Porcentaje para alerta de advertencia
+  DANGER: 100   // Porcentaje para alerta de peligro
+}
+
 const BudgetControl = ({ totalSpent }) => {
   const [budget, setBudget] = useState(0)
   const [showBudgetForm, setShowBudgetForm] = useState(false)
-  const inputRef = useRef(null)
+  const [budgetInput, setBudgetInput] = useState('')
 
-  const percentage = budget > 0 ? (totalSpent / budget) * 100 : 0
-  const remaining = budget - totalSpent
+  // Memoizar cálculos derivados
+  const percentage = useMemo(
+    () => budget > 0 ? (totalSpent / budget) * 100 : 0,
+    [budget, totalSpent]
+  )
 
-  const getStatusColor = () => {
-    if (percentage >= 100) return 'text-danger-600'
-    if (percentage >= 80) return 'text-warning-600'
+  const remaining = useMemo(
+    () => budget - totalSpent,
+    [budget, totalSpent]
+  )
+
+  // Memoizar el color del estado basado en el porcentaje
+  const statusColor = useMemo(() => {
+    if (percentage >= BUDGET_THRESHOLDS.DANGER) return 'text-danger-600'
+    if (percentage >= BUDGET_THRESHOLDS.WARNING) return 'text-warning-600'
     return 'text-success-600'
+  }, [percentage])
+
+  // Memoizar el color de la barra de progreso
+  const progressBarColor = useMemo(() => {
+    if (percentage >= BUDGET_THRESHOLDS.DANGER) return '#ef4444' // red
+    if (percentage >= BUDGET_THRESHOLDS.WARNING) return '#f97316' // orange
+    return '#10b981' // green
+  }, [percentage])
+
+  const handleSetBudget = () => {
+    const value = parseFloat(budgetInput)
+    if (!isNaN(value) && value > 0) {
+      setBudget(value)
+    }
+    setShowBudgetForm(false)
+    setBudgetInput('')
   }
 
-  const cancelPresupuesto = () => {
+  const handleCancelBudget = () => {
     setBudget(0)
     setShowBudgetForm(false)
+    setBudgetInput('')
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSetBudget()
+    }
+  }
+
+  const handleCloseForm = () => {
+    setShowBudgetForm(false)
+    setBudgetInput('')
   }
 
   return (
@@ -41,30 +86,24 @@ const BudgetControl = ({ totalSpent }) => {
       {showBudgetForm && (
         <section className='mb-4 p-4 bg-gray-50 rounded-lg animate-fadeIn'>
           <Input
-            ref={inputRef}
             type='number'
             placeholder='Ingresa tu presupuesto'
+            value={budgetInput}
+            onChange={(e) => setBudgetInput(e.target.value)}
+            onKeyDown={handleKeyDown}
             className='w-full px-3 py-2 border border-gray-300 rounded-lg'
-            defaultValue={budget > 0 ? budget : ''}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                setBudget(parseFloat(inputRef.current.value) || 0)
-                setShowBudgetForm(false)
-              }
-            }}
+            min='0'
+            step='0.01'
           />
           <aside className='flex gap-2 mt-3'>
             <button
-              onClick={() => {
-                setBudget(parseFloat(inputRef.current.value) || 0)
-                setShowBudgetForm(false)
-              }}
+              onClick={handleSetBudget}
               className='flex-1 bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors'
             >
               ✓ Establecer
             </button>
             <button
-              onClick={() => setShowBudgetForm(false)}
+              onClick={handleCloseForm}
               className='px-4 py-2 text-gray-500 hover:text-gray-700 transition-colors'
             >
               Cancelar
@@ -82,7 +121,7 @@ const BudgetControl = ({ totalSpent }) => {
             </div>
             <div className='flex justify-between items-center'>
               <span className='text-gray-600'>Gastado:</span>
-              <span className={`font-bold ${getStatusColor()}`}>${totalSpent.toFixed(2)}</span>
+              <span className={`font-bold ${statusColor}`}>${totalSpent.toFixed(2)}</span>
             </div>
             <div className='flex justify-between items-center'>
               <span className='text-gray-600'>Restante:</span>
@@ -90,7 +129,10 @@ const BudgetControl = ({ totalSpent }) => {
                 ${remaining.toFixed(2)}
               </span>
             </div>
-            <button onClick={cancelPresupuesto} className='w-full text-sm text-blue-600 hover:text-blue-800 font-medium'>
+            <button 
+              onClick={handleCancelBudget} 
+              className='w-full text-sm text-blue-600 hover:text-blue-800 font-medium'
+            >
               Cancelar presupuesto
             </button>
           </section>
@@ -109,14 +151,14 @@ const BudgetControl = ({ totalSpent }) => {
                 backgroundColor: '#e5e7eb',
                 '& .MuiLinearProgress-bar': {
                   borderRadius: 5,
-                  backgroundColor: percentage >= 100 ? '#ef4444' : percentage >= 60 ? '#f97316' : '#10b981',
+                  backgroundColor: progressBarColor,
                   transition: 'background-color 0.3s ease'
                 }
               }}
             />
           </aside>
 
-          {percentage >= 100 && (
+          {percentage >= BUDGET_THRESHOLDS.DANGER && (
             <div className='mt-3 p-3 bg-red-100 border border-red-300 rounded-lg'>
               <p className='text-red-700 font-medium flex items-center gap-2'>
                 <IconAlert className='w-4 h-4' />
@@ -124,7 +166,7 @@ const BudgetControl = ({ totalSpent }) => {
               </p>
             </div>
           )}
-          {percentage >= 80 && percentage < 100 && (
+          {percentage >= BUDGET_THRESHOLDS.WARNING && percentage < BUDGET_THRESHOLDS.DANGER && (
             <div className='mt-3 p-3 bg-yellow-100 border border-yellow-300 rounded-lg'>
               <p className='text-yellow-700 font-medium flex items-center gap-2'>
                 <IconWarning className='w-4 h-4' />

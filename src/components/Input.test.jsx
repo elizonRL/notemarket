@@ -18,8 +18,9 @@ describe('Input Component', () => {
 
   test('renderiza con type password', () => {
     render(<Input type='password' />)
-    const input = screen.getByLabelText(/password/i)
-    expect(input).toBeInTheDocument()
+    // Buscar el input por su tipo usando querySelector
+    const passwordInput = document.querySelector('input[type="password"]')
+    expect(passwordInput).toBeInTheDocument()
   })
 
   test('renderiza con placeholder', () => {
@@ -73,7 +74,7 @@ describe('Input Component', () => {
   test('funciona como input no controlado', async () => {
     const user = userEvent.setup()
 
-    render(<Input defaulvalue='Valor inicial' />)
+    render(<Input defaultValue='Valor inicial' />)
 
     const input = screen.getByDisplayValue('Valor inicial')
     await user.type(input, ' extra')

@@ -1,6 +1,80 @@
 import { useState, useCallback } from 'react'
 import Tesseract from 'tesseract.js'
 
+/**
+ * Preprocesa una imagen para mejorar el reconocimiento OCR.
+ * Aplica: escala de grises, aumento de contraste y binarización.
+ * @param {string} imageSource - URL o base64 de la imagen
+ * @returns {Promise<string>} - Imagen procesada como dataURL
+ */
+async function preprocessImage(imageSource) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+
+    img.onload = () => {
+      // Crear canvas con las mismas dimensiones
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      canvas.width = img.width
+      canvas.height = img.height
+
+      // Dibujar imagen original
+      ctx.drawImage(img, 0, 0)
+
+      // Obtener datos de la imagen
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const data = imageData.data
+
+      // Factores de procesamiento
+      const contrastFactor = 1.3  // +30% contraste
+      const brightnessOffset = 25 // +10% brillo (aprox 255 * 0.10)
+
+      // Aplicar procesamiento píxel a píxel
+      for (let i = 0; i < data.length; i += 4) {
+        // RGB
+        let r = data[i]
+        let g = data[i + 1]
+        let b = data[i + 2]
+
+        // Convertir a escala de grises (luminancia ponderada)
+        const gray = 0.299 * r + 0.587 * g + 0.114 * b
+
+        // Aplicar brillo
+        let bright = gray + brightnessOffset
+
+        // Aplicar contraste
+        bright = ((bright - 128) * contrastFactor) + 128
+
+        // Clampear valores a rango válido [0, 255]
+        bright = Math.max(0, Math.min(255, bright))
+
+        // Binarización simple (threshold fijo)
+        const threshold = 128
+        const binary = bright > threshold ? 255 : 0
+
+        // Guardar valores procesados
+        data[i] = binary     // R
+        data[i + 1] = binary // G
+        data[i + 2] = binary // B
+        // Alpha (data[i + 3]) se mantiene igual
+      }
+
+      // Guardar imagen procesada
+      ctx.putImageData(imageData, 0, 0)
+
+      // Devolver como dataURL
+      resolve(canvas.toDataURL('image/jpeg', 0.9))
+    }
+
+    img.onerror = () => {
+      reject(new Error('Error al cargar la imagen para preprocesamiento'))
+    }
+
+    img.src = imageSource
+  })
+}
+
 export function useOCR() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -12,7 +86,13 @@ export function useOCR() {
     setError(null)
 
     try {
-      const result = await Tesseract.recognize(imageSource, 'spa+eng', {
+      // Preprocesar imagen para mejorar OCR
+      console.log('[OCR] Preprocesando imagen...')
+      const processedImage = await preprocessImage(imageSource)
+      console.log('[OCR] Imagen preprocesada, iniciando reconocimiento...')
+
+      // Usar imagen procesada en lugar de la original
+      const result = await Tesseract.recognize(processedImage, 'spa+eng', {
         logger: (m) => {
           if (m.status === 'recognizing text') {
             setProgress(Math.round(m.progress * 100))
@@ -50,12 +130,12 @@ export function useOCR() {
 
 function parseProductText(text) {
   console.log('[OCR] Texto recibido para parsear:', text)
-  
+
   // Limpiar texto de ruido OCR común (sin eliminar saltos de línea)
   const cleanText = text
     .replace(/[^\x20-\x7E\n\r\táéíóúÁÉÍÓÚñÑÜü]/g, '') // Solo ASCII printable + vocales
     .trim()
-  
+
   // Separar por líneas primero
   const lines = cleanText.split(/\r?\n/).map(l => l.trim()).filter(l => l)
   console.log('[OCR] Líneas procesadas:', lines)
@@ -178,7 +258,7 @@ function parseProductText(text) {
     if (/^(?:pes|net|ml|g|kg|l|lt|gr|cc|oz)/i.test(line)) {
       continue
     }
-    
+
     const isExcluded = excludePatterns.some(pattern => pattern.test(line))
     const hasPrice = /\$\d+/.test(line)
     const isValidLength = line.length >= 3 && line.length <= 60
@@ -221,7 +301,7 @@ function parseProductText(text) {
     price: Math.round(price * 100) / 100,  // Redondear a 2 decimales
     quantity: quantity || 1
   }
-  
+
   console.log('[OCR] Resultado final:', result)
   return result
 }

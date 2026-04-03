@@ -1,29 +1,33 @@
 @import "tailwindcss";
 
 /* ============================================
-   TAILWIND CSS v4 - NOTEMARKET JACARTA THEME
+   TAILWIND CSS v4 - NOTEMARKET IMPROVED
    Paleta de colores moderna y elegante
    ============================================ */
 
+/* Importar fuente distintiva */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
 @theme {
   /* =========================================
-     COLORES JACARTA (Azul-Púrpura Elegante)
+     COLORES JACARTA (Azul-Púrpura Suavizado)
+     Versión más sofisticada y menos saturada
      ======================================== */
-  --color-jacarta-50: #f3f3fb;
-  --color-jacarta-100: #e8e9f5;
-  --color-jacarta-200: #ced2ef;
-  --color-jacarta-300: #acb4e4;
-  --color-jacarta-400: #8c96d4;
-  --color-jacarta-500: #676dca;
-  --color-jacarta-600: #585cb8;
-  --color-jacarta-700: #4f49ac;
-  --color-jacarta-800: #47408d;
-  --color-jacarta-900: #322f60;
-  --color-jacarta-950: #282546;
+  --color-jacarta-50: #eef2ff;
+  --color-jacarta-100: #e0e7ff;
+  --color-jacarta-200: #c7d2fe;
+  --color-jacarta-300: #a5b4fc;
+  --color-jacarta-400: #818cf8;
+  --color-jacarta-500: #6366f1;
+  --color-jacarta-600: #4f46e5;
+  --color-jacarta-700: #4338ca;
+  --color-jacarta-800: #3730a3;
+  --color-jacarta-900: #312e81;
+  --color-jacarta-950: #1e1b4b;
   
   /* Alias principales */
-  --color-primary: var(--color-jacarta-500);
-  --color-primary-hover: var(--color-jacarta-600);
+  --color-primary: var(--color-jacarta-600);
+  --color-primary-hover: var(--color-jacarta-700);
 
   /* =========================================
      COLORES COMPLEMENTARIOS
@@ -44,6 +48,15 @@
   --color-success-500: #22c55e;
   --color-success-600: #16a34a;
   
+  /* Verde mint fresco - nuevo acento */
+  --color-mint-50: #ecfdf5;
+  --color-mint-100: #d1fae5;
+  --color-mint-200: #a7f3d0;
+  --color-mint-300: #6ee7b7;
+  --color-mint-400: #34d399;
+  --color-mint-500: #10b981;
+  --color-mint-600: #059669;
+  
   /* Rojo advertencia */
   --color-danger-50: #fef2f2;
   --color-danger-100: #fee2e2;
@@ -57,15 +70,15 @@
   --color-warning-600: #ca8a04;
 
   /* =========================================
-     FONDOS
+     FONDOS - Más neutrales y limpios
      ======================================== */
-  --color-bg-primary: var(--color-jacarta-50);
-  --color-bg-secondary: var(--color-jacarta-100);
+  --color-bg-primary: #f8fafc;
+  --color-bg-secondary: #f1f5f9;
   --color-bg-card: #ffffff;
   
-  /* Tipografía */
-  --font-display: 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  /* Tipografía - Fuente distintiva */
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
   
   /* Radios */
   --radius-sm: 0.375rem;

@@ -252,6 +252,7 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
         cancelText='Cancelar'
         variant='danger'
         onConfirm={confirmDelete}
+        onCancel={cancelDelete}
         onClose={cancelDelete}
       />
     </div>

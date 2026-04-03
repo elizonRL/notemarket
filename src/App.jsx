@@ -199,7 +199,7 @@ function App () {
           </div>
         </section>
         <section className='px-4 py-6'>
-          <div className='max-w-6xl mx-auto'>
+          <div className='max-w-4xl mx-auto'>
             <h2 className='text-2xl font-bold mb-6 text-center text-gray-800'>Lista de productos</h2>
             {products.length === 0
               ? (

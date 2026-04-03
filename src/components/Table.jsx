@@ -29,21 +29,23 @@ const Table = ({ products, onUpdateProduct, onDeleteProduct }) => {
   }, [products, onUpdateProduct])
 
   const handleDeleteClick = useCallback((index) => {
-    // Trigger delete animation
-    setDeletingIndex(index)
-    setTimeout(() => {
-      setProductToDelete(index)
-      setShowDeleteModal(true)
-      setDeletingIndex(null)
-    }, 300)
+    // Abrir modal directamente sin animación
+    setProductToDelete(index)
+    setShowDeleteModal(true)
   }, [])
 
   const confirmDelete = useCallback(() => {
-    if (productToDelete !== null) {
-      onDeleteProduct(productToDelete)
-    }
+    // Animar primero, luego eliminar
+    setDeletingIndex(productToDelete)
     setShowDeleteModal(false)
-    setProductToDelete(null)
+    
+    setTimeout(() => {
+      if (productToDelete !== null) {
+        onDeleteProduct(productToDelete)
+      }
+      setProductToDelete(null)
+      setDeletingIndex(null)
+    }, 300)
   }, [productToDelete, onDeleteProduct])
 
   const cancelDelete = useCallback(() => {

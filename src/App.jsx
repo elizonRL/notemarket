@@ -204,7 +204,7 @@ function App () {
             {products.length === 0
               ? (
                 <div className='bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden animate-fadeIn'>
-                  <div className='py-12'>
+                  <div className='py-12 text-center'>
                     <div className='flex justify-center mb-6'>
                       <div className='relative'>
                         {/* Shopping cart illustration */}

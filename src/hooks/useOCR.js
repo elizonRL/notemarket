@@ -49,7 +49,16 @@ export function useOCR() {
 }
 
 function parseProductText(text) {
-  const lines = text.split('\n').map(l => l.trim()).filter(l => l)
+  console.log('[OCR] Texto recibido para parsear:', text)
+  
+  // Limpiar texto de ruido OCR común (sin eliminar saltos de línea)
+  const cleanText = text
+    .replace(/[^\x20-\x7E\n\r\táéíóúÁÉÍÓÚñÑÜü]/g, '') // Solo ASCII printable + vocales
+    .trim()
+  
+  // Separar por líneas primero
+  const lines = cleanText.split(/\r?\n/).map(l => l.trim()).filter(l => l)
+  console.log('[OCR] Líneas procesadas:', lines)
 
   let productName = ''
   let price = 0
@@ -61,6 +70,8 @@ function parseProductText(text) {
   const qtyPatterns = [
     // x5, x 5, X1, x1
     { regex: /\bx[\s]*(\d+)\b/i, extract: 1 },
+    // X5 al final
+    { regex: /X(\d+)\s*$/im, extract: 1 },
     // 5 unidades, 5 uds, 5 pzas
     { regex: /(\d+)\s*(?:unidades?|uds?|pcs?|pzas?|unds?)/i, extract: 1 },
     // Cant: 5 o Cantidad: 5
@@ -70,11 +81,12 @@ function parseProductText(text) {
   ]
 
   for (const pattern of qtyPatterns) {
-    const match = text.match(pattern.regex)
+    const match = cleanText.match(pattern.regex)
     if (match) {
       const qty = parseInt(match[pattern.extract])
       if (qty > 0 && qty < 100) {
         quantity = qty
+        console.log('[OCR] Cantidad detectada:', quantity)
         break
       }
     }
@@ -86,18 +98,15 @@ function parseProductText(text) {
   const pricePatterns = [
     // PVP $19,90 o PVP $19.90 - formato específico de etiqueta
     { regex: /(?:pvp|precio|val|importe)[\s:]*\$?\s*(\d+)[.,](\d{2})/i, multiplier: 1 },
-    // $12.99 o $ 12.99 - formato con coma decimal
+    // $12.99 o $ 12.99 - formato con punto decimal
     { regex: /\$\s*(\d+)[.,](\d{2})/, multiplier: 1 },
     // 12,99€ o 12.99 (al final de línea)
     { regex: /(\d+)[.,](\d{2})[\s€$]*(?:\s|$)/m, multiplier: 1 },
-    // Solo número de 3-4 dígitos que parezca precio (99-9999)
+    // Solo número de 2-4 dígitos que parezca precio (99-9999)
     { regex: /\b(\d{2,4})[.,](\d{2})\b/, multiplier: 1 },
     // Formato sin decimales pero mayor a 10 (probablemente centavos)
     { regex: /\b(\d{3,5})\b/, multiplier: 0.01 },
   ]
-
-  // Limpiar texto primero
-  const cleanText = text.replace(/[^\d.,$\s€£¥PVRpvalIUNmportecantidadxX0-9]/gi, ' ')
 
   for (const pattern of pricePatterns) {
     const match = cleanText.match(pattern.regex)
@@ -109,7 +118,42 @@ function parseProductText(text) {
 
       // Filtrar precios válidos (entre $0.10 y $9999)
       if (price >= 0.10 && price < 10000) {
+        console.log('[OCR] Precio detectado:', price, 'patrón:', pattern.regex)
         break
+      }
+    }
+  }
+
+  // Si no se detectó precio, intentar con texto normalizado (comas a puntos)
+  if (price === 0) {
+    const normalizedText = cleanText.replace(/,/g, '.')
+    for (const pattern of pricePatterns) {
+      const match = normalizedText.match(pattern.regex)
+      if (match) {
+        const whole = match[1]
+        const decimals = match[2] || '00'
+        const priceStr = `${whole}.${decimals.padEnd(2, '0')}`
+        price = parseFloat(priceStr) * pattern.multiplier
+
+        if (price >= 0.10 && price < 10000) {
+          console.log('[OCR] Precio detectado (normalizado):', price)
+          break
+        }
+      }
+    }
+  }
+
+  // Fallback: buscar cualquier número que parezca precio (entre 1-999)
+  if (price === 0) {
+    const priceLikeNumbers = cleanText.match(/\b(\d{1,3}[.,]\d{2})\b/g)
+    if (priceLikeNumbers) {
+      for (const num of priceLikeNumbers) {
+        const parsed = parseFloat(num.replace(/,/g, '.'))
+        if (parsed >= 1 && parsed < 1000) {
+          price = parsed
+          console.log('[OCR] Precio detectado (fallback):', price)
+          break
+        }
       }
     }
   }
@@ -117,9 +161,6 @@ function parseProductText(text) {
   // ============================================
   // 3. EXTRAER NOMBRE DEL PRODUCTO
   // ============================================
-  // El nombre suele estar en líneas con texto en mayúsculas o mixto
-  // No limitar a primeras 8 líneas - buscar en todo el texto
-  
   const excludePatterns = [
     // Líneas que empiezan con indicadores de contenido/peso
     /^(?:pes|net|ml|g|kg|l|lt|gr|cc|oz)/i,
@@ -129,15 +170,11 @@ function parseProductText(text) {
     /^[$€£¥]\s*\d+/,                     // Solo precio
     /^(?:supermercado|tienda|fecha|lote)/i,
     /^\s*$/,                             // Vacío
-    // Líneas que parecen ser solo contenido (contienen medidas)
-    /^\d+\s*(?:ml|g|kg|l|gr)\s*$/i,
   ]
 
   // Buscar la primera línea que parezca un nombre de producto
-  // (típicamente 2-5 palabras, no muy corta, no solo números)
-  // Buscar en TODAS las líneas, no solo las primeras 8
   for (const line of lines) {
-    // Ignorar líneas que contengan indicadores de contenido
+    // Ignorar líneas que contengan indicadores de contenido/peso
     if (/^(?:pes|net|ml|g|kg|l|lt|gr|cc|oz)/i.test(line)) {
       continue
     }
@@ -154,6 +191,7 @@ function parseProductText(text) {
         .trim()
 
       if (productName.length >= 3) {
+        console.log('[OCR] Nombre detectado:', productName)
         break
       }
     }
@@ -164,6 +202,7 @@ function parseProductText(text) {
     for (const line of lines) {
       if (/[a-zA-Z]+\s+\d/.test(line)) {
         productName = line.trim()
+        console.log('[OCR] Nombre detectado (fallback letras+números):', productName)
         break
       }
     }
@@ -177,11 +216,14 @@ function parseProductText(text) {
   // ============================================
   // 4. RETORNAR RESULTADO
   // ============================================
-  return {
+  const result = {
     name: productName || 'Producto detectado',
     price: Math.round(price * 100) / 100,  // Redondear a 2 decimales
     quantity: quantity || 1
   }
+  
+  console.log('[OCR] Resultado final:', result)
+  return result
 }
 
 export default useOCR

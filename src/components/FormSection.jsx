@@ -8,9 +8,16 @@ const FormSection = ({ handleAddProduct, onClose }) => {
   const [showOCR, setShowOCR] = useState(false)
 
   const handleOCRScanComplete = (data) => {
+    console.log('[FormSection] Datos recibidos del OCR:', data)
+    console.log('[FormSection] Actualizando estados...')
     setProductName(data.name)
     setProductPrice(data.price > 0 ? data.price.toString() : '')
     setProductQuantity(data.quantity > 0 ? data.quantity.toString() : '1')
+    console.log('[FormSection] Estados actualizados:', {
+      name: data.name,
+      price: data.price,
+      quantity: data.quantity
+    })
     setShowOCR(false)
   }
 

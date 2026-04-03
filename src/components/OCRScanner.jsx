@@ -140,7 +140,17 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
     if (!imagePreview) return
 
     setScanError(null)
+    console.log('[OCR] Iniciando procesamiento de imagen...')
     const result = await processImage(imagePreview)
+
+    // DEBUG: Log de los datos recibidos
+    console.log('[OCR] Resultado del OCR:', result)
+    console.log('[OCR] Datos procesados:', {
+      name: result.name,
+      price: result.price,
+      quantity: result.quantity,
+      rawText: result.rawText?.substring(0, 100)
+    })
 
     if (result.success) {
       setScannedData(result)
@@ -151,11 +161,13 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
 
   const handleConfirm = () => {
     if (scannedData) {
-      onScanComplete({
+      const dataToSend = {
         name: scannedData.name,
         price: scannedData.price,
         quantity: scannedData.quantity
-      })
+      }
+      console.log('[OCR] Enviando datos a FormSection:', dataToSend)
+      onScanComplete(dataToSend)
     }
     handleReset()
   }

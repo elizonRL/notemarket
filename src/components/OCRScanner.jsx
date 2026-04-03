@@ -227,22 +227,23 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
             <div className='space-y-3'>
               {/* Video o estado de carga/error */}
               <div className='relative w-full rounded-lg overflow-hidden bg-black min-h-[240px] flex items-center justify-center'>
+                {/* Loading overlay */}
                 {!isVideoReady && !cameraError && (
-                  <div className='text-white text-center p-4'>
-                    <div className='animate-pulse mb-2'>📷</div>
-                    <p>Iniciando cámara...</p>
+                  <div className='absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-10'>
+                    <div className='animate-pulse mb-2 text-4xl'>📷</div>
+                    <p className='text-white text-sm'>Iniciando cámara...</p>
                   </div>
                 )}
                 <video
                   ref={videoRef}
                   autoPlay
                   playsInline
-                  className={`w-full rounded-lg bg-black ${!isVideoReady ? 'hidden' : ''}`}
+                  className='w-full rounded-lg bg-black'
                 />
                 {cameraError && (
-                  <div className='text-red-400 text-center p-4'>
-                    <p className='text-lg mb-2'>⚠️</p>
-                    <p>{cameraError}</p>
+                  <div className='absolute inset-0 bg-black/80 flex flex-col items-center justify-center'>
+                    <p className='text-red-400 text-lg mb-2'>⚠️</p>
+                    <p className='text-red-300 text-sm text-center px-4'>{cameraError}</p>
                   </div>
                 )}
               </div>

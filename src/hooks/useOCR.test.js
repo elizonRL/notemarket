@@ -207,4 +207,30 @@ describe('parseProductText - Extracción de datos', () => {
 
     expect(output.name).toContain('Arroz')
   })
+
+  test('parsea etiqueta de supermercado típica colombiana', async () => {
+    // Simula el texto OCR de una etiqueta real como las imágenes proporcionadas
+    mockRecognize.mockResolvedValue({
+      data: {
+        text: `ESTUCHE FRESCOL LECHE ENTERA
+PES Net 946 ml
+PVP $19,90
+X1`
+      }
+    })
+
+    const { result } = renderHook(() => useOCR())
+
+    let output
+    await act(async () => {
+      output = await result.current.processImage('test.jpg')
+    })
+
+    console.log('Output:', output)
+
+    // Verificar que extrae correctamente
+    expect(output.name).toBe('ESTUCHE FRESCOL LECHE ENTERA')
+    expect(output.price).toBe(19.90)
+    expect(output.quantity).toBe(1)
+  })
 })

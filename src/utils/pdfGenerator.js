@@ -15,7 +15,7 @@ export const generateInvoicePDF = (products, total, filename = 'notemarket-factu
   const doc = new jsPDF()
 
   // Colores
-  const primaryColor = [103, 109, 202] // Jacarta #676dca
+  const primaryColor = [220, 38, 38] // Jacarta #dc2626 (rojo)
   const textDark = [51, 51, 51]
   const textGray = [128, 128, 128]
 

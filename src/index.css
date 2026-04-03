@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ============================================
-   TAILWIND CSS v4 - NOTEMARKET IMPROVED
-   Paleta de colores moderna y elegante
+   NOTEMARKET - COLORES VISIBLES
+   Paleta de colores actualizada
    ============================================ */
 
 /* Importar fuente distintiva */
@@ -10,20 +10,19 @@
 
 @theme {
   /* =========================================
-     COLORES JACARTA (Azul-Púrpura Suavizado)
-     Versión más sofisticada y menos saturada
+     COLORES ROJO/ROSADO - Más visible
      ======================================== */
-  --color-jacarta-50: #eef2ff;
-  --color-jacarta-100: #e0e7ff;
-  --color-jacarta-200: #c7d2fe;
-  --color-jacarta-300: #a5b4fc;
-  --color-jacarta-400: #818cf8;
-  --color-jacarta-500: #6366f1;
-  --color-jacarta-600: #4f46e5;
-  --color-jacarta-700: #4338ca;
-  --color-jacarta-800: #3730a3;
-  --color-jacarta-900: #312e81;
-  --color-jacarta-950: #1e1b4b;
+  --color-jacarta-50: #fef2f2;
+  --color-jacarta-100: #fee2e2;
+  --color-jacarta-200: #fecaca;
+  --color-jacarta-300: #fca5a5;
+  --color-jacarta-400: #f87171;
+  --color-jacarta-500: #ef4444;
+  --color-jacarta-600: #dc2626;
+  --color-jacarta-700: #b91c1c;
+  --color-jacarta-800: #991b1b;
+  --color-jacarta-900: #7f1d1d;
+  --color-jacarta-950: #450a0a;
   
   /* Alias principales */
   --color-primary: var(--color-jacarta-600);
@@ -33,14 +32,14 @@
      COLORES COMPLEMENTARIOS
      ======================================== */
   
-  /* Naranja cálido - para CTAs importantes */
-  --color-warm-50: #fff7ed;
-  --color-warm-100: #ffedd5;
-  --color-warm-200: #fed7aa;
-  --color-warm-300: #fdba74;
-  --color-warm-400: #fb923c;
-  --color-warm-500: #f97316;
-  --color-warm-600: #ea580c;
+  /* Verde esmeralda */
+  --color-warm-50: #ecfdf5;
+  --color-warm-100: #d1fae5;
+  --color-warm-200: #a7f3d0;
+  --color-warm-300: #6ee7b7;
+  --color-warm-400: #34d399;
+  --color-warm-500: #10b981;
+  --color-warm-600: #059669;
   
   /* Verde éxito */
   --color-success-50: #f0fdf4;
@@ -48,7 +47,7 @@
   --color-success-500: #22c55e;
   --color-success-600: #16a34a;
   
-  /* Verde mint fresco - nuevo acento */
+  /* Verde mint */
   --color-mint-50: #ecfdf5;
   --color-mint-100: #d1fae5;
   --color-mint-200: #a7f3d0;
@@ -70,13 +69,13 @@
   --color-warning-600: #ca8a04;
 
   /* =========================================
-     FONDOS - Más neutrales y limpios
+     FONDOS
      ======================================== */
   --color-bg-primary: #f8fafc;
   --color-bg-secondary: #f1f5f9;
   --color-bg-card: #ffffff;
   
-  /* Tipografía - Fuente distintiva */
+  /* Tipografía */
   --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
   

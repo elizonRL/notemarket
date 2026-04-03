@@ -49,7 +49,7 @@ describe('test para probar el formulario de agregar productos', async () => {
     const user = userEvent.setup()
 
     // Llenar el formulario con datos de prueba
-    await user.type(inputProductName, 'Manzanas rojas')
+    await user.type(inputProductName, 'Manzana')
     await user.selectOptions(selectCategory, 'Frutas y Verduras')
     await user.type(inputQuantity, '10')
     await user.type(inputPrice, '2.50')
@@ -64,7 +64,9 @@ describe('test para probar el formulario de agregar productos', async () => {
       expect.objectContaining({
         name: 'Manzana',
         category: 'Frutas y Verduras',
-        price: 2.5
+        price: 2.5,
+        quantity: 10,
+        quantityDisplay: '10 unidades'
       })
     )
   })

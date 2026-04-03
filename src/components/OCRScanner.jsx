@@ -24,6 +24,58 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
     }
   }, [])
 
+  // Effect to detect video ready state with timeout
+  useEffect(() => {
+    if (!cameraMode) return
+
+    // Give React a tick to render the video element
+    const setupTimeout = setTimeout(() => {
+      const video = videoRef.current
+      if (!video || !streamRef.current) return
+
+      // Timeout fallback - 3 seconds max to show video
+      const timeoutId = setTimeout(() => {
+        if (video.readyState >= 2) {
+          video.play().catch(() => {})
+          setIsVideoReady(true)
+        }
+      }, 3000)
+
+      const handleLoadedMetadata = () => {
+        clearTimeout(timeoutId)
+        video.play().catch(() => {})
+        setIsVideoReady(true)
+      }
+
+      const handleCanPlay = () => {
+        clearTimeout(timeoutId)
+        if (video.readyState >= 2) {
+          video.play().catch(() => {})
+          setIsVideoReady(true)
+        }
+      }
+
+      // Check if already loaded
+      if (video.readyState >= 2) {
+        clearTimeout(timeoutId)
+        video.play().catch(() => {})
+        setIsVideoReady(true)
+      } else {
+        video.addEventListener('loadedmetadata', handleLoadedMetadata)
+        video.addEventListener('canplay', handleCanPlay)
+      }
+
+      // Cleanup function
+      return () => {
+        clearTimeout(timeoutId)
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        video.removeEventListener('canplay', handleCanPlay)
+      }
+    }, 100)
+
+    return () => clearTimeout(setupTimeout)
+  }, [cameraMode])
+
   const startCamera = async () => {
     try {
       setCameraError(null)
@@ -40,11 +92,6 @@ const OCRScanner = ({ onScanComplete, onClose }) => {
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream
-        // Esperar a que el video esté listo
-        videoRef.current.onloadedmetadata = () => {
-          videoRef.current.play()
-          setIsVideoReady(true)
-        }
       }
       setCameraMode(true)
     } catch (err) {

@@ -56,17 +56,40 @@ function parseProductText(text) {
   let quantity = 1
 
   // ============================================
-  // 1. EXTRAER PRECIO - Múltiples patrones
+  // 1. EXTRAER CANTIDAD - Primero para quitarla del nombre
+  // ============================================
+  const qtyPatterns = [
+    // x5, x 5, X1, x1
+    { regex: /\bx[\s]*(\d+)\b/i, extract: 1 },
+    // 5 unidades, 5 uds, 5 pzas
+    { regex: /(\d+)\s*(?:unidades?|uds?|pcs?|pzas?|unds?)/i, extract: 1 },
+    // Cant: 5 o Cantidad: 5
+    { regex: /(?:cant(?:idad)?|qty)[\s:]*(\d+)/i, extract: 1 },
+    // Paquete x 6, Pack 6
+    { regex: /(?:paquete|pack|promo)[\s]*x?[\s]*(\d+)/i, extract: 1 },
+  ]
+
+  for (const pattern of qtyPatterns) {
+    const match = text.match(pattern.regex)
+    if (match) {
+      const qty = parseInt(match[pattern.extract])
+      if (qty > 0 && qty < 100) {
+        quantity = qty
+        break
+      }
+    }
+  }
+
+  // ============================================
+  // 2. EXTRAER PRECIO - Múltiples patrones
   // ============================================
   const pricePatterns = [
-    // $12.99 o $ 12.99
-    { regex: /\$[\s]*(\d+)[.,](\d{2})/, multiplier: 1 },
+    // PVP $19,90 o PVP $19.90 - formato específico de etiqueta
+    { regex: /(?:pvp|precio|val|importe)[\s:]*\$?\s*(\d+)[.,](\d{2})/i, multiplier: 1 },
+    // $12.99 o $ 12.99 - formato con coma decimal
+    { regex: /\$\s*(\d+)[.,](\d{2})/, multiplier: 1 },
     // 12,99€ o 12.99 (al final de línea)
     { regex: /(\d+)[.,](\d{2})[\s€$]*(?:\s|$)/m, multiplier: 1 },
-    // Precio: $12.99 o Precio: 12.99
-    { regex: /precio[\s:]*\$?\s*(\d+)[.,]?(\d*)/i, multiplier: 1 },
-    // PVP: 12.99
-    { regex: /(?:pvp|val|importe)[\s:]*\$?\s*(\d+)[.,](\d{2})/i, multiplier: 1 },
     // Solo número de 3-4 dígitos que parezca precio (99-9999)
     { regex: /\b(\d{2,4})[.,](\d{2})\b/, multiplier: 1 },
     // Formato sin decimales pero mayor a 10 (probablemente centavos)
@@ -92,46 +115,33 @@ function parseProductText(text) {
   }
 
   // ============================================
-  // 2. EXTRAER CANTIDAD
-  // ============================================
-  const qtyPatterns = [
-    // x5, x 5
-    { regex: /x[\s]*(\d+)/i, extract: 1 },
-    // 5 unidades, 5 uds, 5 pzas
-    { regex: /(\d+)\s*(?:unidades?|uds?|pcs?|pzas?|unds?)/i, extract: 1 },
-    // Cant: 5 o Cantidad: 5
-    { regex: /(?:cant(?:idad)?|qty)[\s:]*(\d+)/i, extract: 1 },
-    // Paquete x 6, Pack 6
-    { regex: /(?:paquete|pack|promo)[\s]*x?[\s]*(\d+)/i, extract: 1 },
-  ]
-
-  for (const pattern of qtyPatterns) {
-    const match = text.match(pattern.regex)
-    if (match) {
-      const qty = parseInt(match[pattern.extract])
-      if (qty > 0 && qty < 100) {
-        quantity = qty
-        break
-      }
-    }
-  }
-
-  // ============================================
   // 3. EXTRAER NOMBRE DEL PRODUCTO
   // ============================================
-  // El nombre suele estar en las primeras líneas o cerca del precio
-
+  // El nombre suele estar en líneas con texto en mayúsculas o mixto
+  // No limitar a primeras 8 líneas - buscar en todo el texto
+  
   const excludePatterns = [
+    // Líneas que empiezan con indicadores de contenido/peso
+    /^(?:pes|net|ml|g|kg|l|lt|gr|cc|oz)/i,
+    // Indicadores de precio
     /^(?:precio|cantidad|código|sku|ref|pes|peso|descuento|total|subtotal|iva|pvp)/i,
     /^\d+[.,]?\d*$/,                    // Solo números
     /^[$€£¥]\s*\d+/,                     // Solo precio
     /^(?:supermercado|tienda|fecha|lote)/i,
     /^\s*$/,                             // Vacío
+    // Líneas que parecen ser solo contenido (contienen medidas)
+    /^\d+\s*(?:ml|g|kg|l|gr)\s*$/i,
   ]
 
   // Buscar la primera línea que parezca un nombre de producto
   // (típicamente 2-5 palabras, no muy corta, no solo números)
-  for (const line of lines.slice(0, 8)) {  // Primeras 8 líneas
+  // Buscar en TODAS las líneas, no solo las primeras 8
+  for (const line of lines) {
+    // Ignorar líneas que contengan indicadores de contenido
+    if (/^(?:pes|net|ml|g|kg|l|lt|gr|cc|oz)/i.test(line)) {
+      continue
+    }
+    
     const isExcluded = excludePatterns.some(pattern => pattern.test(line))
     const hasPrice = /\$\d+/.test(line)
     const isValidLength = line.length >= 3 && line.length <= 60
@@ -157,6 +167,11 @@ function parseProductText(text) {
         break
       }
     }
+  }
+
+  // Limpiar cantidad del nombre (ej: "ESTUCHE FRESCOL LECHE ENTERA X1" -> "ESTUCHE FRESCOL LECHE ENTERA")
+  if (productName) {
+    productName = productName.replace(/\s*x\s*\d+\s*$/i, '').trim()
   }
 
   // ============================================

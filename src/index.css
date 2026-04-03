@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ============================================
-   NOTEMARKET - COLORES ORIGINALES
-   Paleta azul-púrpura
+   NOTEMARKET - COLORES AZUL VERDADERO
+   Paleta azul brillante
    ============================================ */
 
 /* Importar fuente distintiva */
@@ -10,19 +10,19 @@
 
 @theme {
   /* =========================================
-     COLORES JACARTA (Azul-Púrpura)
+     COLORES AZUL (Azul verdadero, no morado)
      ======================================== */
-  --color-jacarta-50: #eef2ff;
-  --color-jacarta-100: #e0e7ff;
-  --color-jacarta-200: #c7d2fe;
-  --color-jacarta-300: #a5b4fc;
-  --color-jacarta-400: #818cf8;
-  --color-jacarta-500: #6366f1;
-  --color-jacarta-600: #4f46e5;
-  --color-jacarta-700: #4338ca;
-  --color-jacarta-800: #3730a3;
-  --color-jacarta-900: #312e81;
-  --color-jacarta-950: #1e1b4b;
+  --color-jacarta-50: #eff6ff;
+  --color-jacarta-100: #dbeafe;
+  --color-jacarta-200: #bfdbfe;
+  --color-jacarta-300: #93c5fd;
+  --color-jacarta-400: #60a5fa;
+  --color-jacarta-500: #3b82f6;
+  --color-jacarta-600: #2563eb;
+  --color-jacarta-700: #1d4ed8;
+  --color-jacarta-800: #1e40af;
+  --color-jacarta-900: #1e3a8a;
+  --color-jacarta-950: #172554;
   
   /* Alias principales */
   --color-primary: var(--color-jacarta-600);
@@ -77,7 +77,7 @@
   
   /* Tipografía */
   --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --color-body: 'Plus Jakarta Sans', system-ui, sans-serif;
   
   /* Radios */
   --radius-sm: 0.375rem;

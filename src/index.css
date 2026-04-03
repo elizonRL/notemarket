@@ -138,3 +138,125 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-jacarta-400);
 }
+
+/* ============================================
+   NUEVAS ANIMACIONES UX/UI
+   ============================================ */
+
+/* Shake animation para errores */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Stagger animation para filas de tabla */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Escala para delete animation */
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+.animate-scaleOut {
+  animation: scaleOut 0.3s ease-in forwards;
+}
+
+/* Skeleton loader pulse */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+.animate-skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite, shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Progress bar animation */
+@keyframes progress-fill {
+  from { width: 0; }
+}
+
+.animate-progress {
+  animation: progress-fill 0.8s ease-out;
+}
+
+/* Focus ring animation */
+@keyframes focus-ring {
+  0% { box-shadow: 0 0 0 0 rgba(103, 109, 202, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(103, 109, 202, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(103, 109, 202, 0); }
+}
+
+.animate-focus-ring {
+  animation: focus-ring 0.5s ease-out;
+}
+
+/* Spinner para loading */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin 1s linear infinite;
+}
+
+/* Tooltip fade */
+@keyframes tooltip-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-tooltip {
+  animation: tooltip-fade 0.2s ease-out;
+}
+
+/* Border success animation */
+@keyframes border-success {
+  0% { border-color: var(--color-success-500); }
+  50% { border-color: var(--color-success-600); }
+  100% { border-color: var(--color-success-500); }
+}
+
+.animate-border-success {
+  animation: border-success 1s ease-in-out;
+}

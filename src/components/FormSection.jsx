@@ -1,19 +1,9 @@
 import { useState, useMemo } from 'react'
 import { Input } from './Input'
-import OCRScanner from './OCRScanner'
-import { IconCheck, IconScan, IconClose, IconPlus } from './Icons'
+import { IconCheck, IconClose, IconPlus } from './Icons'
 import { CATEGORIES } from './Icons/categories'
 
 const FormSection = ({ handleAddProduct, onClose }) => {
-  const [showOCR, setShowOCR] = useState(false)
-
-  const handleOCRScanComplete = (data) => {
-    setProductName(data.name)
-    setProductPrice(data.price > 0 ? data.price.toString() : '')
-    setProductQuantity(data.quantity > 0 ? data.quantity.toString() : '1')
-    setShowOCR(false)
-  }
-
   const [productName, setProductName] = useState('')
   const [productPrice, setProductPrice] = useState('')
   const [productQuantity, setProductQuantity] = useState('')
@@ -262,15 +252,6 @@ const FormSection = ({ handleAddProduct, onClose }) => {
 
           <button
             type='button'
-            onClick={() => setShowOCR(true)}
-            className='flex-1 sm:flex-none bg-gradient-to-r from-warm-500 to-warm-600 text-white py-3.5 px-4 rounded-xl font-semibold hover:from-warm-600 hover:to-warm-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md'
-          >
-            <IconScan className='w-5 h-5' />
-            <span className='text-sm'>Escanear</span>
-          </button>
-
-          <button
-            type='button'
             onClick={onClose}
             className='flex-1 sm:flex-none bg-gray-100 text-gray-600 py-3.5 px-4 rounded-xl font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2'
           >
@@ -279,13 +260,6 @@ const FormSection = ({ handleAddProduct, onClose }) => {
           </button>
         </div>
       </form>
-
-      {showOCR && (
-        <OCRScanner
-          onScanComplete={handleOCRScanComplete}
-          onClose={() => setShowOCR(false)}
-        />
-      )}
     </div>
   )
 }
